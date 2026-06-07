@@ -1,15 +1,25 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Kenya SMEs Organization API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: members
+    description: Member registration and management
+  - name: coordinators
+    description: Coordinator registration and management
+  - name: sectors
+    description: SME sectors and profiles
+  - name: events
+    description: Events management
+  - name: stats
+    description: Organization statistics
+
 paths:
   /healthz:
     get:
@@ -24,6 +34,260 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [stats]
+      summary: Get organization statistics
+      description: Returns high-level stats for the organization
+      responses:
+        "200":
+          description: Statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrgStats"
+
+  /members:
+    get:
+      operationId: listMembers
+      tags: [members]
+      summary: List members
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: county
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        "200":
+          description: List of members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Member"
+    post:
+      operationId: registerMember
+      tags: [members]
+      summary: Register a new member
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MemberInput"
+      responses:
+        "201":
+          description: Member registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Member"
+        "400":
+          description: Validation error
+
+  /members/categories:
+    get:
+      operationId: getMemberCategories
+      tags: [members]
+      summary: Get membership categories
+      responses:
+        "200":
+          description: Membership categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MemberCategory"
+
+  /coordinators:
+    get:
+      operationId: listCoordinators
+      tags: [coordinators]
+      summary: List coordinators
+      parameters:
+        - name: county
+          in: query
+          schema:
+            type: string
+        - name: constituency
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        "200":
+          description: List of coordinators
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Coordinator"
+    post:
+      operationId: registerCoordinator
+      tags: [coordinators]
+      summary: Register a new coordinator
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CoordinatorInput"
+      responses:
+        "201":
+          description: Coordinator registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Coordinator"
+        "400":
+          description: Validation error
+
+  /coordinators/benefits:
+    get:
+      operationId: getCoordinatorBenefits
+      tags: [coordinators]
+      summary: Get coordinator benefits
+      responses:
+        "200":
+          description: Coordinator benefits list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Benefit"
+
+  /sectors:
+    get:
+      operationId: listSectors
+      tags: [sectors]
+      summary: List SME sectors
+      responses:
+        "200":
+          description: List of sectors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Sector"
+
+  /sectors/{id}:
+    get:
+      operationId: getSector
+      tags: [sectors]
+      summary: Get sector profile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Sector profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sector"
+        "404":
+          description: Not found
+
+  /events:
+    get:
+      operationId: listEvents
+      tags: [events]
+      summary: List events
+      parameters:
+        - name: upcoming
+          in: query
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: List of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+    post:
+      operationId: createEvent
+      tags: [events]
+      summary: Create event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventInput"
+      responses:
+        "201":
+          description: Event created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+
+  /events/{id}/register:
+    post:
+      operationId: registerForEvent
+      tags: [events]
+      summary: Register for an event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventRegistrantInput"
+      responses:
+        "201":
+          description: Registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventRegistrant"
+
 components:
   schemas:
     HealthStatus:
@@ -31,6 +295,385 @@ components:
       properties:
         status:
           type: string
-      required:
-        - status
+      required: [status]
 
+    OrgStats:
+      type: object
+      properties:
+        totalMembers:
+          type: integer
+        totalCoordinators:
+          type: integer
+        totalSectors:
+          type: integer
+        countiesCovered:
+          type: integer
+        constituenciesCovered:
+          type: integer
+        wardsCovered:
+          type: integer
+        upcomingEvents:
+          type: integer
+      required:
+        - totalMembers
+        - totalCoordinators
+        - totalSectors
+        - countiesCovered
+        - constituenciesCovered
+        - wardsCovered
+        - upcomingEvents
+
+    Member:
+      type: object
+      properties:
+        id:
+          type: integer
+        fullName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        businessName:
+          type: string
+        businessType:
+          type: string
+        category:
+          type: string
+        county:
+          type: string
+        constituency:
+          type: string
+        ward:
+          type: string
+        membershipNumber:
+          type: string
+        status:
+          type: string
+          enum: [active, pending, suspended]
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - fullName
+        - email
+        - phone
+        - businessName
+        - businessType
+        - category
+        - county
+        - constituency
+        - ward
+        - membershipNumber
+        - status
+        - createdAt
+
+    MemberInput:
+      type: object
+      properties:
+        fullName:
+          type: string
+          minLength: 2
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        businessName:
+          type: string
+          minLength: 2
+        businessType:
+          type: string
+        category:
+          type: string
+        county:
+          type: string
+        constituency:
+          type: string
+        ward:
+          type: string
+      required:
+        - fullName
+        - email
+        - phone
+        - businessName
+        - businessType
+        - category
+        - county
+        - constituency
+        - ward
+
+    MemberCategory:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        annualFee:
+          type: number
+        benefits:
+          type: array
+          items:
+            type: string
+      required: [id, name, description, annualFee, benefits]
+
+    Coordinator:
+      type: object
+      properties:
+        id:
+          type: integer
+        fullName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        nationalId:
+          type: string
+        county:
+          type: string
+        constituency:
+          type: string
+        ward:
+          type: string
+        level:
+          type: string
+          enum: [county, constituency, ward]
+        registrationFee:
+          type: number
+        status:
+          type: string
+          enum: [active, pending, suspended]
+        coordinatorCode:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - fullName
+        - email
+        - phone
+        - nationalId
+        - county
+        - constituency
+        - ward
+        - level
+        - registrationFee
+        - status
+        - coordinatorCode
+        - createdAt
+
+    CoordinatorInput:
+      type: object
+      properties:
+        fullName:
+          type: string
+          minLength: 2
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        nationalId:
+          type: string
+        county:
+          type: string
+        constituency:
+          type: string
+        ward:
+          type: string
+        level:
+          type: string
+          enum: [county, constituency, ward]
+        mpesaNumber:
+          type: string
+        motivation:
+          type: string
+      required:
+        - fullName
+        - email
+        - phone
+        - nationalId
+        - county
+        - constituency
+        - ward
+        - level
+        - mpesaNumber
+
+    Benefit:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+      required: [id, title, description, icon]
+
+    Sector:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        totalSMEs:
+          type: integer
+        annualContribution:
+          type: string
+        keyProducts:
+          type: array
+          items:
+            type: string
+        challenges:
+          type: array
+          items:
+            type: string
+        opportunities:
+          type: array
+          items:
+            type: string
+        counties:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - name
+        - description
+        - imageUrl
+        - totalSMEs
+        - annualContribution
+        - keyProducts
+        - challenges
+        - opportunities
+        - counties
+
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        eventDate:
+          type: string
+          format: date-time
+        endDate:
+          type: ["string", "null"]
+          format: date-time
+        venue:
+          type: string
+        county:
+          type: string
+        eventType:
+          type: string
+          enum: [workshop, conference, training, networking, exhibition, other]
+        imageUrl:
+          type: ["string", "null"]
+        registrationDeadline:
+          type: ["string", "null"]
+          format: date-time
+        maxAttendees:
+          type: ["integer", "null"]
+        currentAttendees:
+          type: integer
+        isFeatured:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - description
+        - eventDate
+        - venue
+        - county
+        - eventType
+        - currentAttendees
+        - isFeatured
+        - createdAt
+
+    EventInput:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 3
+        description:
+          type: string
+        eventDate:
+          type: string
+          format: date-time
+        endDate:
+          type: ["string", "null"]
+          format: date-time
+        venue:
+          type: string
+        county:
+          type: string
+        eventType:
+          type: string
+          enum: [workshop, conference, training, networking, exhibition, other]
+        imageUrl:
+          type: ["string", "null"]
+        registrationDeadline:
+          type: ["string", "null"]
+          format: date-time
+        maxAttendees:
+          type: ["integer", "null"]
+        isFeatured:
+          type: boolean
+      required:
+        - title
+        - description
+        - eventDate
+        - venue
+        - county
+        - eventType
+
+    EventRegistrant:
+      type: object
+      properties:
+        id:
+          type: integer
+        eventId:
+          type: integer
+        fullName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, eventId, fullName, email, phone, createdAt]
+
+    EventRegistrantInput:
+      type: object
+      properties:
+        fullName:
+          type: string
+          minLength: 2
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+      required: [fullName, email, phone]

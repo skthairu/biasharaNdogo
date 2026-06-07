@@ -1,0 +1,50 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "fKSWGziCOWZZ7q_qdAoYJ"
+uri = "file://artifacts/kenya-smes/public/images/hero-agribusiness.png"
+type = "image"
+title = "Kenyan agribusiness and farming"
+
+[[generated]]
+id = "lzv3KPdNUnAms4fQt34M-"
+uri = "file://artifacts/kenya-smes/public/images/hero-textile.png"
+type = "image"
+title = "Kenyan textile and fashion"
+
+[[generated]]
+id = "w43JxuwVQg2O3ZTBF4CUP"
+uri = "file://artifacts/kenya-smes/public/images/hero-tech.png"
+type = "image"
+title = "Kenyan tech and digital services"
+
+[[generated]]
+id = "JV8Gh74lCMlcGM6JqHrWT"
+uri = "file://artifacts/kenya-smes/public/images/hero-tourism.png"
+type = "image"
+title = "Kenyan tourism and hospitality"
+
+[[generated]]
+id = "w-TvKKjW705DxHVyLqt4O"
+uri = "file://artifacts/kenya-smes/public/images/hero-retail.png"
+type = "image"
+title = "Kenyan retail and trade"
+
+[[generated]]
+id = "_J46yaCNIzM_nmGxHij52"
+uri = "file://artifacts/kenya-smes/public/images/hero-manufacturing.png"
+type = "image"
+title = "Kenyan manufacturing"
+
+[[generated]]
+id = "R_iYSXNcQ6Eee9m7wSjRZ"
+uri = "file://artifacts/kenya-smes/public/images/hero-artisanal.png"
+type = "image"
+title = "Kenyan artisanal crafts"
+
+[[generated]]
+id = "5e3SXMTl49-XjP16QyUnO"
+uri = "file://artifacts/kenya-smes/public/images/hero-finance.png"
+type = "image"
+title = "Kenyan financial services"
