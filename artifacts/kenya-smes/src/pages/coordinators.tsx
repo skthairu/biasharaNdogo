@@ -16,8 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useGetCoordinatorBenefits, useRegisterCoordinator } from "@workspace/api-client-react";
-import { CoordinatorInputLevel } from "@workspace/api-client-react/src/generated/api.schemas";
+import { useGetCoordinatorBenefits, useRegisterCoordinator, CoordinatorInputLevel } from "@workspace/api-client-react";
 import { KENYA_COUNTIES } from "@/lib/constants";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { CheckCircle2, MapPin, Users, Award, Shield } from "lucide-react";

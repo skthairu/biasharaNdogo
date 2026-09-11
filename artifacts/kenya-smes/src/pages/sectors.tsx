@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useListSectors, useGetSector } from "@workspace/api-client-react";
+import { useListSectors, useGetSector, getGetSectorQueryKey } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
@@ -84,7 +84,7 @@ export default function Sectors() {
 import { Users } from "lucide-react";
 
 function SectorModal({ sectorId, isOpen, onClose }: { sectorId: number | null, isOpen: boolean, onClose: () => void }) {
-  const { data: sector, isLoading } = useGetSector(sectorId || 0, { query: { enabled: !!sectorId } });
+  const { data: sector, isLoading } = useGetSector(sectorId || 0, { query: { enabled: !!sectorId, queryKey: getGetSectorQueryKey(sectorId || 0) } });
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>

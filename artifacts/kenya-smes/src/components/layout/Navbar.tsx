@@ -9,10 +9,11 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/about", label: "About BNAK" },
-    { href: "/sectors", label: "SME Sectors" },
-    { href: "/events", label: "Events" },
-    { href: "/coordinators", label: "Coordinators" },
+    { href: "/about", label: "About" },
+    { href: "/programs", label: "Programmes" },
+    { href: "/partners", label: "Partners" },
+    { href: "/marketplace", label: "Market" },
+    { href: "/membership", label: "Membership" },
   ];
 
   return (

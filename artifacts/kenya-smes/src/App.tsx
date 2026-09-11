@@ -11,6 +11,10 @@ import Membership from "@/pages/membership";
 import Coordinators from "@/pages/coordinators";
 import Sectors from "@/pages/sectors";
 import Events from "@/pages/events";
+import Partners from "@/pages/partners";
+import Programs from "@/pages/programs";
+import Marketplace from "@/pages/marketplace";
+import Admin from "@/pages/admin";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +27,10 @@ function Router() {
         <Route path="/coordinators" component={Coordinators} />
         <Route path="/sectors" component={Sectors} />
         <Route path="/events" component={Events} />
+        <Route path="/partners" component={Partners} />
+        <Route path="/programs" component={Programs} />
+        <Route path="/marketplace" component={Marketplace} />
+        <Route path="/admin" component={Admin} />
         <Route path="/about" component={About} />
         <Route component={NotFound} />
       </Switch>

@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: Api
   version: 0.1.0
-  description: Kenya SMEs Organization API
+  description: Biashara Ndogo Association of Kenya API
 servers:
   - url: /api
     description: Base API path
@@ -346,6 +346,20 @@ components:
           type: string
         ward:
           type: string
+        ageBracket:
+          type: string
+        gender:
+          type: string
+        nationalId:
+          type: string
+        estate:
+          type: string
+        businessLocation:
+          type: string
+        businessRegistrationNumber:
+          type: string
+        kraPin:
+          type: string
         membershipNumber:
           type: string
         status:
@@ -392,6 +406,20 @@ components:
         constituency:
           type: string
         ward:
+          type: string
+        ageBracket:
+          type: string
+        gender:
+          type: string
+        nationalId:
+          type: string
+        estate:
+          type: string
+        businessLocation:
+          type: string
+        businessRegistrationNumber:
+          type: string
+        kraPin:
           type: string
       required:
         - fullName

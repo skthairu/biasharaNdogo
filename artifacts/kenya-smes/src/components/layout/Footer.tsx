@@ -25,7 +25,10 @@ export function Footer() {
             <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Quick Links</h3>
             <ul className="space-y-2">
               <li><Link href="/about" className="text-sm text-white/60 hover:text-primary transition-colors">About BNAK</Link></li>
-              <li><Link href="/sectors" className="text-sm text-white/60 hover:text-primary transition-colors">SME Sectors</Link></li>
+               <li><Link href="/sectors" className="text-sm text-white/60 hover:text-primary transition-colors">SME Sectors</Link></li>
+               <li><Link href="/programs" className="text-sm text-white/60 hover:text-primary transition-colors">BNAK Programmes</Link></li>
+               <li><Link href="/partners" className="text-sm text-white/60 hover:text-primary transition-colors">Partners</Link></li>
+               <li><Link href="/marketplace" className="text-sm text-white/60 hover:text-primary transition-colors">Classified Market</Link></li>
               <li><Link href="/events" className="text-sm text-white/60 hover:text-primary transition-colors">Upcoming Events</Link></li>
               <li><Link href="/membership" className="text-sm text-white/60 hover:text-primary transition-colors">Become a Member</Link></li>
               <li><Link href="/coordinators" className="text-sm text-white/60 hover:text-primary transition-colors">Coordinator Portal</Link></li>
@@ -48,14 +51,16 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-white/60">
               <li>P.O Box 12345-00100</li>
               <li>Nairobi, Kenya</li>
-              <li><a href="mailto:info@bnak.org" className="hover:text-primary transition-colors">info@bnak.org</a></li>
-              <li><a href="tel:+254700000000" className="hover:text-primary transition-colors">+254 700 000 000</a></li>
+               <li><a href="mailto:biasharandogoassociation@gmail.com" className="hover:text-primary transition-colors">biasharandogoassociation@gmail.com</a></li>
+               <li><a href="https://biasharandogo.co.ke" className="hover:text-primary transition-colors">biasharandogo.co.ke</a></li>
+               <li><a href="tel:+254711422163" className="hover:text-primary transition-colors">0711 422 163</a></li>
+               <li><a href="https://wa.me/254711422163" className="hover:text-primary transition-colors">WhatsApp us</a></li>
             </ul>
             <div className="mt-6 pt-6 border-t border-white/10">
               <p className="text-xs text-white/40 font-medium uppercase tracking-wider mb-2">Follow Us</p>
               <div className="flex gap-3">
-                {["Facebook", "Twitter/X", "LinkedIn"].map((s) => (
-                  <a key={s} href="#" className="text-xs text-white/50 hover:text-primary transition-colors">{s}</a>
+                 {["Facebook", "X / Twitter", "Instagram", "LinkedIn", "TikTok"].map((s) => (
+                   <a key={s} href="https://wa.me/254711422163" className="text-xs text-white/50 hover:text-primary transition-colors">{s}</a>
                 ))}
               </div>
             </div>
