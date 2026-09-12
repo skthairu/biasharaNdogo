@@ -186,8 +186,8 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-14 items-center">
             <div className="space-y-6">
               <Badge className="bg-primary/10 text-primary border-0 font-semibold">The National Apex Body</Badge>
-              <h2 className="text-3xl md:text-4xl font-black text-foreground leading-tight">
-                The Unified Voice of Kenya's MSMEs
+               <h2 className="text-3xl md:text-4xl font-black text-foreground leading-tight">
+                 We represent millions of mSMEs across Kenya.
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 Biashara Ndogo Association of Kenya (BNAK) is the national apex body representing Micro, Small and Medium Enterprises, entrepreneurs, cooperatives, and the informal sector economy across Kenya.
@@ -209,10 +209,10 @@ export default function Home() {
 
             <div className="grid grid-cols-2 gap-4">
               {[
-                { label: "Registered SMEs", value: statsLoading ? null : stats?.totalMembers?.toLocaleString() || "0", bg: "bg-primary", text: "text-white" },
-                { label: "Counties Covered", value: statsLoading ? null : "47", bg: "bg-secondary", text: "text-white" },
-                { label: "Constituencies", value: statsLoading ? null : "290", bg: "bg-accent", text: "text-accent-foreground" },
-                { label: "Wards Represented", value: statsLoading ? null : "1,450", bg: "bg-card border shadow-sm", text: "text-foreground" },
+                 { label: "Member businesses in the network", value: statsLoading ? null : stats?.totalMembers?.toLocaleString() || "0", bg: "bg-primary", text: "text-white" },
+                 { label: "County-connected", value: statsLoading ? null : "Nationwide", bg: "bg-secondary", text: "text-white" },
+                 { label: "Grassroots-rooted", value: statsLoading ? null : "Local", bg: "bg-accent", text: "text-accent-foreground" },
+                 { label: "Built for enterprise", value: statsLoading ? null : "Everyday", bg: "bg-card border shadow-sm", text: "text-foreground" },
               ].map((card, i) => (
                 <Card key={i} className={`${card.bg} border-none`}>
                   <CardHeader className="pb-2">
@@ -417,9 +417,9 @@ export default function Home() {
             </div>
             <div className="hidden md:grid grid-cols-2 gap-4">
               {[
-                { title: "Network Nationwide", body: "Connect with thousands of SME peers across all 47 counties." },
+                 { title: "Network Nationwide", body: "Connect with SME peers and opportunities across Kenya." },
                 { title: "Grow Your Business", body: "Access specialized training, mentorship, and capacity building." },
-                { title: "Shape Policy", body: "Your voice in government and policy forums at national level." },
+                 { title: "Shape Policy", body: "Bring the realities of enterprise into policy forums." },
                 { title: "Access Finance", body: "Grants, low-interest loans, and investment opportunities." },
               ].map((item, i) => (
                 <div key={i} className={`bg-white/10 p-5 rounded-2xl backdrop-blur-sm border border-white/20 ${i === 1 ? "mt-6" : i === 3 ? "mt-6" : ""}`}>

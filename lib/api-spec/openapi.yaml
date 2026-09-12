@@ -360,6 +360,10 @@ components:
           type: string
         kraPin:
           type: string
+        monthlyTransactionBracket:
+          type: string
+        mpesaNumber:
+          type: string
         membershipNumber:
           type: string
         status:
@@ -420,6 +424,10 @@ components:
         businessRegistrationNumber:
           type: string
         kraPin:
+          type: string
+        monthlyTransactionBracket:
+          type: string
+        mpesaNumber:
           type: string
       required:
         - fullName

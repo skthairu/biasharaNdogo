@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -60,48 +61,48 @@
 
   /* Kenyan Pride Palette: Green, Red, Black, Golden/Yellow accents */
   /* Background: Warm off-white */
-  --background: 45 30% 98%; 
-  --foreground: 0 0% 9%;
+  --background: 42 33% 97%;
+  --foreground: 160 18% 12%;
 
-  --border: 0 0% 88%;
-  --input: 0 0% 88%;
-  --ring: 142 60% 35%; /* Kenyan Green */
+  --border: 38 18% 84%;
+  --input: 38 18% 84%;
+  --ring: 146 48% 29%;
 
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 9%;
-  --card-border: 0 0% 92%;
+  --card: 42 40% 99%;
+  --card-foreground: 160 18% 12%;
+  --card-border: 38 18% 88%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 9%;
-  --popover-border: 0 0% 92%;
+  --popover: 42 40% 99%;
+  --popover-foreground: 160 18% 12%;
+  --popover-border: 38 18% 88%;
 
   /* Primary: Bold Kenyan Red */
-  --primary: 350 75% 45%;
+  --primary: 350 70% 42%;
   --primary-foreground: 0 0% 100%;
-  --primary-border: 350 85% 35%;
+  --primary-border: 350 72% 32%;
 
   /* Secondary: Kenyan Green */
-  --secondary: 142 60% 35%;
+  --secondary: 146 48% 29%;
   --secondary-foreground: 0 0% 100%;
   --secondary-border: 142 70% 25%;
 
   /* Accent: Golden Yellow */
-  --accent: 45 93% 47%;
-  --accent-foreground: 0 0% 9%;
-  --accent-border: 45 93% 37%;
+  --accent: 38 82% 53%;
+  --accent-foreground: 160 18% 12%;
+  --accent-border: 38 74% 42%;
 
-  --muted: 0 0% 93%;
-  --muted-foreground: 0 0% 40%;
-  --muted-border: 0 0% 88%;
+  --muted: 39 24% 92%;
+  --muted-foreground: 160 9% 39%;
+  --muted-border: 38 18% 84%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
   --destructive-border: 0 84% 50%;
 
-  --app-font-sans: "Plus Jakarta Sans", sans-serif;
-  --app-font-serif: Georgia, serif;
-  --app-font-mono: Menlo, monospace;
-  --radius: 0.5rem;
+  --app-font-sans: "DM Sans", sans-serif;
+  --app-font-serif: "Space Grotesk", sans-serif;
+  --app-font-mono: "Space Grotesk", monospace;
+  --radius: 0.75rem;
 
   --tracking-normal: 0em;
   --spacing: 0.25rem;
@@ -168,5 +169,14 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    font-family: var(--app-font-sans);
+    background-image: linear-gradient(135deg, hsl(var(--background)), hsl(41 40% 95%));
   }
+  h1, h2, h3, h4, h5, h6 { font-family: var(--app-font-serif); }
+}
+
+@layer utilities {
+  .app-shell { max-width: 1440px; margin-inline: auto; padding-inline: clamp(1rem, 4vw, 4rem); }
+  .text-balance { text-wrap: balance; }
+  .soft-grid { background-image: linear-gradient(hsl(var(--foreground) / .045) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground) / .045) 1px, transparent 1px); background-size: 32px 32px; }
 }

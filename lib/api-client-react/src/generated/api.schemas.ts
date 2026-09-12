@@ -46,6 +46,8 @@ export interface Member {
   businessLocation?: string;
   businessRegistrationNumber?: string;
   kraPin?: string;
+  monthlyTransactionBracket?: string;
+  mpesaNumber?: string;
   membershipNumber: string;
   status: MemberStatus;
   createdAt: string;
@@ -70,6 +72,8 @@ export interface MemberInput {
   businessLocation?: string;
   businessRegistrationNumber?: string;
   kraPin?: string;
+  monthlyTransactionBracket?: string;
+  mpesaNumber?: string;
 }
 
 export interface MemberCategory {

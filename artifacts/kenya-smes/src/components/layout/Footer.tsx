@@ -1,12 +1,13 @@
 import { Link } from "wouter";
+import { ArrowUpRight, MessageCircle, PhoneCall } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-foreground text-background py-16 border-t mt-12">
-      <div className="container mx-auto px-4 md:px-6">
+    <footer className="mt-12 border-t bg-foreground py-16 text-background">
+      <div className="app-shell">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="col-span-1 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
+            <Link href="/" className="mb-4 flex items-center gap-2" data-testid="link-footer-home">
               <div className="w-10 h-10 rounded-md bg-primary flex items-center justify-center text-white font-black text-sm">
                 BN
               </div>
@@ -16,33 +17,33 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-sm text-white/60 mb-4 leading-relaxed">
-              The National Apex Voice of MSMEs in Kenya — unifying, representing, and empowering small businesses across all 47 counties, 290 constituencies, and 1,450 wards.
+              The national voice for the entrepreneurs, traders and enterprises that keep Kenya moving. We represent millions of mSMEs across Kenya.
             </p>
             <p className="text-xs font-semibold text-primary italic">"Pamoja, Biashara Yetu, Maisha Yetu"</p>
           </div>
 
           <div>
             <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Quick Links</h3>
-            <ul className="space-y-2">
-              <li><Link href="/about" className="text-sm text-white/60 hover:text-primary transition-colors">About BNAK</Link></li>
-               <li><Link href="/sectors" className="text-sm text-white/60 hover:text-primary transition-colors">SME Sectors</Link></li>
-               <li><Link href="/programs" className="text-sm text-white/60 hover:text-primary transition-colors">BNAK Programmes</Link></li>
-               <li><Link href="/partners" className="text-sm text-white/60 hover:text-primary transition-colors">Partners</Link></li>
-               <li><Link href="/marketplace" className="text-sm text-white/60 hover:text-primary transition-colors">Classified Market</Link></li>
-              <li><Link href="/events" className="text-sm text-white/60 hover:text-primary transition-colors">Upcoming Events</Link></li>
-              <li><Link href="/membership" className="text-sm text-white/60 hover:text-primary transition-colors">Become a Member</Link></li>
-              <li><Link href="/coordinators" className="text-sm text-white/60 hover:text-primary transition-colors">Coordinator Portal</Link></li>
+             <ul className="space-y-2">
+              <li><Link href="/about" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-about">About BNAK</Link></li>
+               <li><Link href="/services" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-services">Services</Link></li>
+               <li><Link href="/gallery" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-gallery">Gallery</Link></li>
+               <li><Link href="/sectors" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-sectors">SME Sectors</Link></li>
+               <li><Link href="/programs" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-programs">BNAK Programmes</Link></li>
+               <li><Link href="/partners" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-partners">Partners</Link></li>
+               <li><Link href="/marketplace" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-marketplace">Classified Market</Link></li>
+              <li><Link href="/events" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-events">Upcoming Events</Link></li>
+              <li><Link href="/membership" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-membership">Become a Member</Link></li>
+              <li><Link href="/coordinators" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-coordinators">Coordinator Portal</Link></li>
             </ul>
           </div>
 
           <div>
             <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Resources</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-white/60 hover:text-primary transition-colors">Policy Briefs</a></li>
-              <li><a href="#" className="text-sm text-white/60 hover:text-primary transition-colors">Market Insights</a></li>
-              <li><a href="#" className="text-sm text-white/60 hover:text-primary transition-colors">Funding Guide</a></li>
-              <li><a href="#" className="text-sm text-white/60 hover:text-primary transition-colors">SME Registry</a></li>
-              <li><a href="#" className="text-sm text-white/60 hover:text-primary transition-colors">Help Center</a></li>
+               <li><Link href="/programs" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-policy">Policy and programmes <ArrowUpRight className="ml-1 inline h-3 w-3" /></Link></li>
+               <li><Link href="/marketplace" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-market-insights">Market insights <ArrowUpRight className="ml-1 inline h-3 w-3" /></Link></li>
+               <li><Link href="/membership" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-registry">Member registration <ArrowUpRight className="ml-1 inline h-3 w-3" /></Link></li>
             </ul>
           </div>
 
@@ -51,16 +52,16 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-white/60">
               <li>P.O Box 12345-00100</li>
               <li>Nairobi, Kenya</li>
-               <li><a href="mailto:biasharandogoassociation@gmail.com" className="hover:text-primary transition-colors">biasharandogoassociation@gmail.com</a></li>
-               <li><a href="https://biasharandogo.co.ke" className="hover:text-primary transition-colors">biasharandogo.co.ke</a></li>
-               <li><a href="tel:+254711422163" className="hover:text-primary transition-colors">0711 422 163</a></li>
-               <li><a href="https://wa.me/254711422163" className="hover:text-primary transition-colors">WhatsApp us</a></li>
+                <li><a href="mailto:biasharandogoassociation@gmail.com" className="hover:text-primary transition-colors" data-testid="link-footer-email">biasharandogoassociation@gmail.com</a></li>
+                <li><a href="https://biasharandogo.co.ke" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors" data-testid="link-footer-site">biasharandogo.co.ke</a></li>
+                <li><a href="tel:+254711422163" className="flex items-center gap-2 hover:text-primary transition-colors" data-testid="link-footer-call"><PhoneCall className="h-4 w-4" /> 0711422163</a></li>
+                <li><a href="https://wa.me/254711422163" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors" data-testid="link-footer-whatsapp"><MessageCircle className="h-4 w-4" /> WhatsApp BNAK</a></li>
             </ul>
             <div className="mt-6 pt-6 border-t border-white/10">
               <p className="text-xs text-white/40 font-medium uppercase tracking-wider mb-2">Follow Us</p>
               <div className="flex gap-3">
                  {["Facebook", "X / Twitter", "Instagram", "LinkedIn", "TikTok"].map((s) => (
-                   <a key={s} href="https://wa.me/254711422163" className="text-xs text-white/50 hover:text-primary transition-colors">{s}</a>
+                    <a key={s} href="https://wa.me/254711422163" target="_blank" rel="noreferrer" className="text-xs text-white/50 hover:text-primary transition-colors" data-testid={`link-footer-social-${s.toLowerCase().replace(/\W+/g, "-")}`}>{s}</a>
                 ))}
               </div>
             </div>
@@ -72,8 +73,8 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Biashara Ndogo Association of Kenya (BNAK). All rights reserved.
           </p>
           <div className="flex gap-4">
-            <a href="#" className="text-white/40 hover:text-primary transition-colors text-sm">Terms</a>
-            <a href="#" className="text-white/40 hover:text-primary transition-colors text-sm">Privacy</a>
+            <a href="#" className="text-white/40 hover:text-primary transition-colors text-sm" data-testid="link-footer-terms">Terms</a>
+            <a href="#" className="text-white/40 hover:text-primary transition-colors text-sm" data-testid="link-footer-privacy">Privacy</a>
           </div>
         </div>
       </div>

@@ -15,6 +15,8 @@ import Partners from "@/pages/partners";
 import Programs from "@/pages/programs";
 import Marketplace from "@/pages/marketplace";
 import Admin from "@/pages/admin";
+import Services from "@/pages/services";
+import Gallery from "@/pages/gallery";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +32,8 @@ function Router() {
         <Route path="/partners" component={Partners} />
         <Route path="/programs" component={Programs} />
         <Route path="/marketplace" component={Marketplace} />
+         <Route path="/services" component={Services} />
+         <Route path="/gallery" component={Gallery} />
         <Route path="/admin" component={Admin} />
         <Route path="/about" component={About} />
         <Route component={NotFound} />

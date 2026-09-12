@@ -84,7 +84,7 @@ const SECTORS_REPRESENTED = [
 
 const NATIONAL_STRUCTURE = [
   { icon: Building2, label: "National Executive Leadership", desc: "Central governance and strategic direction" },
-  { icon: MapPin, label: "County-Level Structures", desc: "Coordination across all 47 counties" },
+  { icon: MapPin, label: "County-Level Structures", desc: "Coordination rooted in local enterprise" },
   { icon: Globe, label: "Sectoral SME Networks", desc: "Organized networks across all industries" },
   { icon: HandshakeIcon, label: "Cooperative & SACCO Alliances", desc: "Partnerships with cooperative structures" },
   { icon: Landmark, label: "Development Partners", desc: "Government, investors, and NGO linkages" },
@@ -250,16 +250,16 @@ export default function About() {
               <Badge className="bg-primary/10 text-primary border-0 font-semibold mb-4">National Coverage</Badge>
               <h2 className="text-3xl font-black mb-4">National Reach, Grassroots Impact</h2>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                BNAK operates across the whole of Kenya — covering all 47 counties, urban and rural areas, and all economic regions. Our network of coordinators ensures programs and support reach the ward level.
+                BNAK operates across Kenya, connecting urban and rural enterprise with practical support and a stronger collective voice. Our network of coordinators helps programmes reach the local market.
               </p>
               <p className="text-muted-foreground mb-8 leading-relaxed">
                 From urban SMEs in Nairobi and Mombasa to rural enterprises in agricultural communities and informal sector businesses in estate markets — every entrepreneur is included.
               </p>
               <div className="space-y-5">
                 {[
-                  { value: "47", label: "Counties", sub: "Full national coverage — urban and rural", color: "bg-primary/10 text-primary" },
-                  { value: "290", label: "Constituencies", sub: "Regional representation structures", color: "bg-secondary/10 text-secondary" },
-                  { value: "1,450", label: "Sub-County Wards", sub: "True grassroots connection", color: "bg-accent/20 text-accent-foreground" },
+                   { value: "Nationwide", label: "County connections", sub: "Enterprise support across Kenya", color: "bg-primary/10 text-primary" },
+                   { value: "Local", label: "Grassroots representation", sub: "Built around the markets businesses know", color: "bg-secondary/10 text-secondary" },
+                   { value: "Together", label: "Sector networks", sub: "A shared voice across everyday enterprise", color: "bg-accent/20 text-accent-foreground" },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-5">
                     <div className={`w-20 h-16 rounded-2xl ${item.color} flex items-center justify-center font-black text-2xl shrink-0`}>
@@ -281,7 +281,7 @@ export default function About() {
 
             <div className="bg-background rounded-3xl p-8 border shadow-sm">
               <h3 className="font-bold text-lg mb-5 flex items-center gap-2">
-                <MapPin className="text-primary" /> All 47 Active Counties
+                <MapPin className="text-primary" /> Our national footprint
               </h3>
               <div className="flex flex-wrap gap-2 max-h-[420px] overflow-y-auto pr-2">
                 {KENYA_COUNTIES.map((county) => (

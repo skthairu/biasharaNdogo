@@ -63,6 +63,8 @@ export const ListMembersResponseItem = zod.object({
   "businessLocation": zod.string().optional(),
   "businessRegistrationNumber": zod.string().optional(),
   "kraPin": zod.string().optional(),
+  "monthlyTransactionBracket": zod.string().optional(),
+  "mpesaNumber": zod.string().optional(),
   "membershipNumber": zod.string(),
   "status": zod.enum(['active', 'pending', 'suspended']),
   "createdAt": zod.coerce.date()
@@ -95,7 +97,9 @@ export const RegisterMemberBody = zod.object({
   "estate": zod.string().optional(),
   "businessLocation": zod.string().optional(),
   "businessRegistrationNumber": zod.string().optional(),
-  "kraPin": zod.string().optional()
+  "kraPin": zod.string().optional(),
+  "monthlyTransactionBracket": zod.string().optional(),
+  "mpesaNumber": zod.string().optional()
 })
 
 

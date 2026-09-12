@@ -25,4 +25,6 @@ export interface MemberInput {
   businessLocation?: string;
   businessRegistrationNumber?: string;
   kraPin?: string;
+  monthlyTransactionBracket?: string;
+  mpesaNumber?: string;
 }

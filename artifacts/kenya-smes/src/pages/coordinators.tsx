@@ -102,7 +102,7 @@ export default function Coordinators() {
         <div className="container mx-auto px-4 md:px-6 relative z-10 text-center max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Become a Local Coordinator</h1>
           <p className="text-lg md:text-xl text-secondary-foreground/90 leading-relaxed mb-8">
-            Be the voice of entrepreneurs in your community. We are building a robust network across all 47 counties, 290 constituencies, and 1,450 wards.
+            Be the voice of entrepreneurs in your community. We are building a robust national network rooted in local markets.
           </p>
           <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur px-6 py-3 rounded-full font-bold text-lg border border-white/30 shadow-lg">
             Registration Fee: KES 500
@@ -147,15 +147,15 @@ export default function Coordinators() {
                 <ul className="space-y-3 text-sm">
                   <li className="flex justify-between items-center pb-2 border-b border-border/50">
                     <span className="font-semibold text-foreground">County Coordinators</span>
-                    <Badge variant="outline" className="bg-background">47 positions</Badge>
+                    <Badge variant="outline" className="bg-background">Open applications</Badge>
                   </li>
                   <li className="flex justify-between items-center pb-2 border-b border-border/50">
                     <span className="font-semibold text-foreground">Constituency Reps</span>
-                    <Badge variant="outline" className="bg-background">290 positions</Badge>
+                    <Badge variant="outline" className="bg-background">Local opportunities</Badge>
                   </li>
                   <li className="flex justify-between items-center">
                     <span className="font-semibold text-foreground">Ward Mobilizers</span>
-                    <Badge variant="outline" className="bg-background">1,450 positions</Badge>
+                    <Badge variant="outline" className="bg-background">Community-led</Badge>
                   </li>
                 </ul>
               </div>

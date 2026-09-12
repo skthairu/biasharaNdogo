@@ -22,6 +22,8 @@ export const membersTable = pgTable("members", {
   businessLocation: text("business_location"),
   businessRegistrationNumber: text("business_registration_number"),
   kraPin: text("kra_pin"),
+  monthlyTransactionBracket: text("monthly_transaction_bracket"),
+  mpesaNumber: text("mpesa_number"),
   kycStatus: text("kyc_status").notNull().default("pending"),
   membershipNumber: text("membership_number").notNull().unique(),
   status: memberStatusEnum("status").notNull().default("pending"),
