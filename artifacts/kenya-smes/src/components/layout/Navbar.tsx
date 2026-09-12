@@ -13,7 +13,7 @@ export function Navbar() {
     { href: "/e-mobility", label: "E-Mobility" },
     { href: "/services", label: "Services" },
     { href: "/programs", label: "Programmes" },
-    { href: "/marketplace", label: "Marketplace" },
+    { href: "/soko", label: "Soko" },
     { href: "/contact", label: "Contact" },
     { href: "/membership", label: "Membership" },
   ];

@@ -25,6 +25,8 @@ import type {
   BnakAiQuestion,
   Coordinator,
   CoordinatorInput,
+  EmobilityRegistration,
+  EmobilityRegistrationInput,
   Event,
   EventInput,
   EventRegistrant,
@@ -33,6 +35,9 @@ import type {
   ListCoordinatorsParams,
   ListEventsParams,
   ListMembersParams,
+  MarketplacePackage,
+  MarketplaceSellerApplication,
+  MarketplaceSellerApplicationInput,
   Member,
   MemberCategory,
   MemberInput,
@@ -1200,5 +1205,224 @@ export const useRegisterForEvent = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getRegisterForEventMutationOptions(options));
+    }
+
+export const getListMarketplacePackagesUrl = () => {
+
+
+
+
+  return `/api/marketplace/packages`
+}
+
+/**
+ * @summary List monthly Marketplace seller packages
+ */
+export const listMarketplacePackages = async ( options?: RequestInit): Promise<MarketplacePackage[]> => {
+
+  return customFetch<MarketplacePackage[]>(getListMarketplacePackagesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListMarketplacePackagesQueryKey = () => {
+    return [
+    `/api/marketplace/packages`
+    ] as const;
+    }
+
+
+export const getListMarketplacePackagesQueryOptions = <TData = Awaited<ReturnType<typeof listMarketplacePackages>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMarketplacePackages>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListMarketplacePackagesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMarketplacePackages>>> = ({ signal }) => listMarketplacePackages({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMarketplacePackages>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListMarketplacePackagesQueryResult = NonNullable<Awaited<ReturnType<typeof listMarketplacePackages>>>
+export type ListMarketplacePackagesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List monthly Marketplace seller packages
+ */
+
+export function useListMarketplacePackages<TData = Awaited<ReturnType<typeof listMarketplacePackages>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listMarketplacePackages>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListMarketplacePackagesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getCreateMarketplaceSellerApplicationUrl = () => {
+
+
+
+
+  return `/api/marketplace/seller-applications`
+}
+
+/**
+ * @summary Apply for member-only Marketplace seller access
+ */
+export const createMarketplaceSellerApplication = async (marketplaceSellerApplicationInput: MarketplaceSellerApplicationInput, options?: RequestInit): Promise<MarketplaceSellerApplication> => {
+
+  return customFetch<MarketplaceSellerApplication>(getCreateMarketplaceSellerApplicationUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      marketplaceSellerApplicationInput,)
+  }
+);}
+
+
+
+
+export const getCreateMarketplaceSellerApplicationMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMarketplaceSellerApplication>>, TError,{data: BodyType<MarketplaceSellerApplicationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createMarketplaceSellerApplication>>, TError,{data: BodyType<MarketplaceSellerApplicationInput>}, TContext> => {
+
+const mutationKey = ['createMarketplaceSellerApplication'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createMarketplaceSellerApplication>>, {data: BodyType<MarketplaceSellerApplicationInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createMarketplaceSellerApplication(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateMarketplaceSellerApplicationMutationResult = NonNullable<Awaited<ReturnType<typeof createMarketplaceSellerApplication>>>
+    export type CreateMarketplaceSellerApplicationMutationBody = BodyType<MarketplaceSellerApplicationInput>
+    export type CreateMarketplaceSellerApplicationMutationError = ErrorType<void>
+
+    /**
+ * @summary Apply for member-only Marketplace seller access
+ */
+export const useCreateMarketplaceSellerApplication = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMarketplaceSellerApplication>>, TError,{data: BodyType<MarketplaceSellerApplicationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createMarketplaceSellerApplication>>,
+        TError,
+        {data: BodyType<MarketplaceSellerApplicationInput>},
+        TContext
+      > => {
+      return useMutation(getCreateMarketplaceSellerApplicationMutationOptions(options));
+    }
+
+export const getCreateEmobilityRegistrationUrl = () => {
+
+
+
+
+  return `/api/emobility/registrations`
+}
+
+/**
+ * @summary Register for the BNAK E-Mobility programme
+ */
+export const createEmobilityRegistration = async (emobilityRegistrationInput: EmobilityRegistrationInput, options?: RequestInit): Promise<EmobilityRegistration> => {
+
+  return customFetch<EmobilityRegistration>(getCreateEmobilityRegistrationUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      emobilityRegistrationInput,)
+  }
+);}
+
+
+
+
+export const getCreateEmobilityRegistrationMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createEmobilityRegistration>>, TError,{data: BodyType<EmobilityRegistrationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createEmobilityRegistration>>, TError,{data: BodyType<EmobilityRegistrationInput>}, TContext> => {
+
+const mutationKey = ['createEmobilityRegistration'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createEmobilityRegistration>>, {data: BodyType<EmobilityRegistrationInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createEmobilityRegistration(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateEmobilityRegistrationMutationResult = NonNullable<Awaited<ReturnType<typeof createEmobilityRegistration>>>
+    export type CreateEmobilityRegistrationMutationBody = BodyType<EmobilityRegistrationInput>
+    export type CreateEmobilityRegistrationMutationError = ErrorType<void>
+
+    /**
+ * @summary Register for the BNAK E-Mobility programme
+ */
+export const useCreateEmobilityRegistration = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createEmobilityRegistration>>, TError,{data: BodyType<EmobilityRegistrationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createEmobilityRegistration>>,
+        TError,
+        {data: BodyType<EmobilityRegistrationInput>},
+        TContext
+      > => {
+      return useMutation(getCreateEmobilityRegistrationMutationOptions(options));
     }
 

@@ -27,6 +27,7 @@ import BusinessHealth from "@/pages/business-health";
 import Alerts from "@/pages/alerts";
 import Recognition from "@/pages/recognition";
 import EMobility from "@/pages/e-mobility";
+import EMobilityRegister from "@/pages/e-mobility-register";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ function Router() {
         <Route path="/events" component={Events} />
         <Route path="/partners" component={Partners} />
         <Route path="/programs" component={Programs} />
+        <Route path="/soko" component={Marketplace} />
         <Route path="/marketplace" component={Marketplace} />
          <Route path="/services" component={Services} />
          <Route path="/gallery" component={Gallery} />
@@ -54,6 +56,7 @@ function Router() {
         <Route path="/alerts" component={Alerts} />
         <Route path="/recognition" component={Recognition} />
         <Route path="/e-mobility" component={EMobility} />
+        <Route path="/e-mobility/register" component={EMobilityRegister} />
         
         <Route path="/contact" component={Contact} />
         

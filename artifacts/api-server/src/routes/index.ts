@@ -7,6 +7,8 @@ import sectorsRouter from "./sectors";
 import eventsRouter from "./events";
 import bnakAiRouter from "./bnak-ai";
 import verificationRouter from "./verification";
+import marketplaceRouter from "./marketplace";
+import emobilityRouter from "./emobility";
 
 const router: IRouter = Router();
 
@@ -18,5 +20,7 @@ router.use(sectorsRouter);
 router.use(eventsRouter);
 router.use(bnakAiRouter);
 router.use(verificationRouter);
+router.use(marketplaceRouter);
+router.use(emobilityRouter);
 
 export default router;

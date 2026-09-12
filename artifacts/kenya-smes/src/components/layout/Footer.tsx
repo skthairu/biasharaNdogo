@@ -31,7 +31,7 @@ export function Footer() {
                <li><Link href="/sectors" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-sectors">SME Sectors</Link></li>
                <li><Link href="/programs" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-programs">BNAK Programmes</Link></li>
                <li><Link href="/partners" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-partners">Partners</Link></li>
-               <li><Link href="/marketplace" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-marketplace">Classified Market</Link></li>
+               <li><Link href="/soko" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-soko">Soko</Link></li>
               <li><Link href="/events" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-events">Upcoming Events</Link></li>
               <li><Link href="/membership" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-membership">Become a Member</Link></li>
               <li><Link href="/coordinators" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-coordinators">Coordinator Portal</Link></li>

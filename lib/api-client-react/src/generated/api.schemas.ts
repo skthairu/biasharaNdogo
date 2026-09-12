@@ -119,6 +119,87 @@ export interface VerificationChallenge {
   expiresAt: string;
 }
 
+export type MarketplacePackageName = typeof MarketplacePackageName[keyof typeof MarketplacePackageName];
+
+
+export const MarketplacePackageName = {
+  Starter: 'Starter',
+  Growth: 'Growth',
+  Pro: 'Pro',
+  B2B: 'B2B',
+  Enterprise: 'Enterprise',
+} as const;
+
+export interface MarketplacePackage {
+  name: MarketplacePackageName;
+  monthlyFee: number;
+  description: string;
+}
+
+export type MarketplaceSellerApplicationInputPackageName = typeof MarketplaceSellerApplicationInputPackageName[keyof typeof MarketplaceSellerApplicationInputPackageName];
+
+
+export const MarketplaceSellerApplicationInputPackageName = {
+  Starter: 'Starter',
+  Growth: 'Growth',
+  Pro: 'Pro',
+  B2B: 'B2B',
+  Enterprise: 'Enterprise',
+} as const;
+
+export interface MarketplaceSellerApplicationInput {
+  membershipNumber: string;
+  email: string;
+  phone: string;
+  packageName: MarketplaceSellerApplicationInputPackageName;
+  mpesaNumber: string;
+  /**
+     * @minLength 20
+     * @maxLength 1000
+     */
+  businessSummary: string;
+  verificationToken: string;
+  verificationAnswer: string;
+  formStartedAt: number;
+  website?: string;
+}
+
+export interface MarketplaceSellerApplication {
+  id: number;
+  membershipNumber: string;
+  packageName: string;
+  monthlyFee: number;
+  status: string;
+  paymentStatus: string;
+  createdAt: string;
+}
+
+export interface EmobilityRegistrationInput {
+  fullName: string;
+  email: string;
+  phone: string;
+  businessName: string;
+  operatorType: string;
+  county: string;
+  mpesaNumber: string;
+  verificationToken: string;
+  verificationAnswer: string;
+  formStartedAt: number;
+  website?: string;
+}
+
+export interface EmobilityRegistration {
+  id: number;
+  fullName: string;
+  businessName: string;
+  operatorType: string;
+  county: string;
+  fee: number;
+  status: string;
+  paymentStatus: string;
+  createdAt: string;
+}
+
 export interface MemberCategory {
   id: number;
   name: string;

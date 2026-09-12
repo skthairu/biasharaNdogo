@@ -23,6 +23,10 @@ tags:
     description: Kenyan business guidance assistant
   - name: verification
     description: Anti-bot verification
+  - name: marketplace
+    description: Separate paid BNAK Marketplace seller system
+  - name: emobility
+    description: E-Mobility programme registrations
 
 paths:
   /healthz:
@@ -324,6 +328,65 @@ paths:
               schema:
                 $ref: "#/components/schemas/EventRegistrant"
 
+  /marketplace/packages:
+    get:
+      operationId: listMarketplacePackages
+      tags: [marketplace]
+      summary: List monthly Marketplace seller packages
+      responses:
+        "200":
+          description: Marketplace packages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MarketplacePackage"
+
+  /marketplace/seller-applications:
+    post:
+      operationId: createMarketplaceSellerApplication
+      tags: [marketplace]
+      summary: Apply for member-only Marketplace seller access
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MarketplaceSellerApplicationInput"
+      responses:
+        "202":
+          description: Seller application received and awaiting verification
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarketplaceSellerApplication"
+        "400":
+          description: Invalid application or anti-bot verification
+        "403":
+          description: Matching eligible BNAK membership not found
+
+  /emobility/registrations:
+    post:
+      operationId: createEmobilityRegistration
+      tags: [emobility]
+      summary: Register for the BNAK E-Mobility programme
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmobilityRegistrationInput"
+      responses:
+        "202":
+          description: Registration received and awaiting payment verification
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmobilityRegistration"
+        "400":
+          description: Invalid registration or anti-bot verification
+
 components:
   schemas:
     HealthStatus:
@@ -526,6 +589,119 @@ components:
           type: string
           format: date-time
       required: [token, question, expiresAt]
+
+    MarketplacePackage:
+      type: object
+      properties:
+        name:
+          type: string
+          enum: [Starter, Growth, Pro, B2B, Enterprise]
+        monthlyFee:
+          type: integer
+        description:
+          type: string
+      required: [name, monthlyFee, description]
+
+    MarketplaceSellerApplicationInput:
+      type: object
+      properties:
+        membershipNumber:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        packageName:
+          type: string
+          enum: [Starter, Growth, Pro, B2B, Enterprise]
+        mpesaNumber:
+          type: string
+        businessSummary:
+          type: string
+          minLength: 20
+          maxLength: 1000
+        verificationToken:
+          type: string
+        verificationAnswer:
+          type: string
+        formStartedAt:
+          type: integer
+        website:
+          type: string
+      required: [membershipNumber, email, phone, packageName, mpesaNumber, businessSummary, verificationToken, verificationAnswer, formStartedAt]
+
+    MarketplaceSellerApplication:
+      type: object
+      properties:
+        id:
+          type: integer
+        membershipNumber:
+          type: string
+        packageName:
+          type: string
+        monthlyFee:
+          type: integer
+        status:
+          type: string
+        paymentStatus:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, membershipNumber, packageName, monthlyFee, status, paymentStatus, createdAt]
+
+    EmobilityRegistrationInput:
+      type: object
+      properties:
+        fullName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        businessName:
+          type: string
+        operatorType:
+          type: string
+        county:
+          type: string
+        mpesaNumber:
+          type: string
+        verificationToken:
+          type: string
+        verificationAnswer:
+          type: string
+        formStartedAt:
+          type: integer
+        website:
+          type: string
+      required: [fullName, email, phone, businessName, operatorType, county, mpesaNumber, verificationToken, verificationAnswer, formStartedAt]
+
+    EmobilityRegistration:
+      type: object
+      properties:
+        id:
+          type: integer
+        fullName:
+          type: string
+        businessName:
+          type: string
+        operatorType:
+          type: string
+        county:
+          type: string
+        fee:
+          type: integer
+        status:
+          type: string
+        paymentStatus:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, fullName, businessName, operatorType, county, fee, status, paymentStatus, createdAt]
 
     MemberCategory:
       type: object

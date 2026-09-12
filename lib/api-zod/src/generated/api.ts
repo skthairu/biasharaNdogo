@@ -323,3 +323,54 @@ export const RegisterForEventBody = zod.object({
 })
 
 
+/**
+ * @summary List monthly Marketplace seller packages
+ */
+export const ListMarketplacePackagesResponseItem = zod.object({
+  "name": zod.enum(['Starter', 'Growth', 'Pro', 'B2B', 'Enterprise']),
+  "monthlyFee": zod.number(),
+  "description": zod.string()
+})
+export const ListMarketplacePackagesResponse = zod.array(ListMarketplacePackagesResponseItem)
+
+
+/**
+ * @summary Apply for member-only Marketplace seller access
+ */
+export const createMarketplaceSellerApplicationBodyBusinessSummaryMin = 20;
+export const createMarketplaceSellerApplicationBodyBusinessSummaryMax = 1000;
+
+
+
+export const CreateMarketplaceSellerApplicationBody = zod.object({
+  "membershipNumber": zod.string(),
+  "email": zod.string().email(),
+  "phone": zod.string(),
+  "packageName": zod.enum(['Starter', 'Growth', 'Pro', 'B2B', 'Enterprise']),
+  "mpesaNumber": zod.string(),
+  "businessSummary": zod.string().min(createMarketplaceSellerApplicationBodyBusinessSummaryMin).max(createMarketplaceSellerApplicationBodyBusinessSummaryMax),
+  "verificationToken": zod.string(),
+  "verificationAnswer": zod.string(),
+  "formStartedAt": zod.number(),
+  "website": zod.string().optional()
+})
+
+
+/**
+ * @summary Register for the BNAK E-Mobility programme
+ */
+export const CreateEmobilityRegistrationBody = zod.object({
+  "fullName": zod.string(),
+  "email": zod.string().email(),
+  "phone": zod.string(),
+  "businessName": zod.string(),
+  "operatorType": zod.string(),
+  "county": zod.string(),
+  "mpesaNumber": zod.string(),
+  "verificationToken": zod.string(),
+  "verificationAnswer": zod.string(),
+  "formStartedAt": zod.number(),
+  "website": zod.string().optional()
+})
+
+

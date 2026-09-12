@@ -4,3 +4,4 @@ export * from "./coordinators";
 export * from "./coordinator_benefits";
 export * from "./sectors";
 export * from "./events";
+export * from "./marketplace";

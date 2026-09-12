@@ -34,12 +34,17 @@ export default function EMobility() {
               The Future of Transport is Clean & Electric. Lower running costs, better margins, and a cleaner environment. BNAK connects operators, owners, and SMEs to the evolving electric mobility network in Kenya.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-12 px-8" asChild data-testid="button-emobility-join">
-                <Link href="/membership">Register as an Operator</Link>
-              </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 font-bold h-12 px-8" asChild data-testid="button-emobility-contact">
-                <Link href="/contact">Contact Hub Support</Link>
-              </Button>
+              <div className="flex flex-col gap-2">
+                <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-12 px-8" asChild data-testid="button-emobility-join">
+                  <Link href="/e-mobility/register">Register as an Operator</Link>
+                </Button>
+                <span className="text-xs font-semibold text-white/70 text-center tracking-wide uppercase">KSh 150 Registration</span>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 font-bold h-12 px-8" asChild data-testid="button-emobility-contact">
+                  <Link href="/contact">Contact Hub Support</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -114,12 +119,12 @@ export default function EMobility() {
             
             <div className="max-w-4xl mx-auto mt-12 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900 rounded-2xl p-8 text-center">
               <Sprout className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
-              <h3 className="text-2xl font-black mb-3 text-emerald-900 dark:text-emerald-100">Verified Marketplace</h3>
+              <h3 className="text-2xl font-black mb-3 text-emerald-900 dark:text-emerald-100">Soko Marketplace Pathway</h3>
               <p className="text-emerald-700 dark:text-emerald-300 mb-6">
                 Looking to buy, sell, or rent an electric vehicle? BNAK ensures all listed E-Mobility partners and sellers pass a rigorous verification process.
               </p>
               <Button asChild className="bg-emerald-600 hover:bg-emerald-700 font-bold" data-testid="button-verified-marketplace">
-                <Link href="/marketplace">Browse E-Mobility Marketplace</Link>
+                <Link href="/soko">Browse E-Mobility Marketplace</Link>
               </Button>
             </div>
           </TabsContent>
