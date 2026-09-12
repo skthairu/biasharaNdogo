@@ -53,12 +53,15 @@ export function Footer() {
           <div>
             <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Resources & Contact</h3>
             <ul className="space-y-2 text-sm text-white/60">
-              <li>P.O Box 12345-00100</li>
               <li>Nairobi, Kenya</li>
-                <li><a href="mailto:biasharandogoassociation@gmail.com" className="hover:text-primary transition-colors" data-testid="link-footer-email">biasharandogoassociation@gmail.com</a></li>
-                <li><a href="https://biasharandogo.co.ke" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors" data-testid="link-footer-site">biasharandogo.co.ke</a></li>
-                <li><a href="tel:+254711422163" className="flex items-center gap-2 hover:text-primary transition-colors" data-testid="link-footer-call"><PhoneCall className="h-4 w-4" /> 0711422163</a></li>
-                <li><a href="https://wa.me/254711422163" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors" data-testid="link-footer-whatsapp"><MessageCircle className="h-4 w-4" /> WhatsApp BNAK</a></li>
+              <li><a href="mailto:biasharandogoassociation@gmail.com" className="hover:text-primary transition-colors break-words" data-testid="link-footer-email">biasharandogoassociation@gmail.com</a></li>
+              <li><a href="https://biasharandogo.co.ke" target="_blank" rel="noreferrer" className="hover:text-primary transition-colors" data-testid="link-footer-site">biasharandogo.co.ke</a></li>
+              
+              <li className="pt-2">
+                <span className="block text-xs font-semibold text-white/80 mb-1">Call or WhatsApp:</span>
+                <a href="tel:+254711422163" className="flex items-center gap-2 hover:text-primary transition-colors mb-2" data-testid="link-footer-call"><PhoneCall className="h-4 w-4" /> 0711422163</a>
+                <a href="https://wa.me/254711422163" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors" data-testid="link-footer-whatsapp"><MessageCircle className="h-4 w-4" /> 0711422163</a>
+              </li>
             </ul>
             <div className="mt-6 pt-6 border-t border-white/10">
               <p className="text-xs text-white/40 font-medium uppercase tracking-wider mb-2">Follow Us</p>

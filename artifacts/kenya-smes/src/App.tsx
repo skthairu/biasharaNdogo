@@ -5,6 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { AppLayout } from "@/components/layout/AppLayout";
 
+import Contact from "@/pages/contact";
+
 import Home from "@/pages/home";
 import About from "@/pages/about";
 import Membership from "@/pages/membership";
@@ -52,6 +54,8 @@ function Router() {
         <Route path="/alerts" component={Alerts} />
         <Route path="/recognition" component={Recognition} />
         <Route path="/e-mobility" component={EMobility} />
+        
+        <Route path="/contact" component={Contact} />
         
         <Route component={NotFound} />
       </Switch>

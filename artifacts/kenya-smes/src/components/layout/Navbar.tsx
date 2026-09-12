@@ -14,6 +14,7 @@ export function Navbar() {
     { href: "/services", label: "Services" },
     { href: "/programs", label: "Programmes" },
     { href: "/marketplace", label: "Marketplace" },
+    { href: "/contact", label: "Contact" },
     { href: "/membership", label: "Membership" },
   ];
 
@@ -50,8 +51,6 @@ export function Navbar() {
               ))}
             </div>
             <div className="flex items-center gap-2">
-              <a href="tel:+254711422163" className="hidden items-center gap-1.5 text-xs font-bold text-secondary 2xl:flex" data-testid="link-nav-call"><PhoneCall className="h-3.5 w-3.5" /> 0711422163</a>
-              <a href="https://wa.me/254711422163" target="_blank" rel="noreferrer" className="hidden items-center gap-1.5 text-xs font-bold text-secondary 2xl:flex" data-testid="link-nav-whatsapp"><MessageCircle className="h-3.5 w-3.5" /> WhatsApp</a>
               <Button asChild variant="outline" size="sm" className="hidden font-semibold border-primary text-primary hover:bg-primary hover:text-white 2xl:inline-flex" data-testid="button-nav-coordinator">
                 <Link href="/coordinators">Be a Coordinator</Link>
               </Button>
@@ -62,7 +61,6 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
-            <a href="https://wa.me/254711422163" target="_blank" rel="noreferrer" aria-label="WhatsApp BNAK" className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary/10 text-secondary" data-testid="link-nav-mobile-whatsapp"><MessageCircle className="h-4 w-4" /></a>
             <Button
               variant="ghost"
               size="icon"
@@ -93,7 +91,13 @@ export function Navbar() {
               </Link>
             ))}
             <div className="pt-4 border-t space-y-2">
-              <a href="tel:+254711422163" className="flex items-center justify-center gap-2 py-2 text-sm font-bold text-secondary" data-testid="link-mobile-call"><PhoneCall className="h-4 w-4" /> Call 0711422163</a>
+              <div className="py-2 text-sm text-center">
+                <p className="font-semibold text-foreground mb-2">Reach BNAK directly</p>
+                <div className="flex flex-col gap-2 items-center justify-center">
+                  <a href="tel:+254711422163" className="flex items-center gap-2 font-bold text-secondary" data-testid="link-mobile-call"><PhoneCall className="h-4 w-4" /> Call 0711422163</a>
+                  <a href="https://wa.me/254711422163" target="_blank" rel="noreferrer" className="flex items-center gap-2 font-bold text-secondary" data-testid="link-mobile-whatsapp"><MessageCircle className="h-4 w-4" /> WhatsApp 0711422163</a>
+                </div>
+              </div>
               <Button asChild variant="outline" className="w-full justify-center border-primary text-primary" data-testid="button-mobile-coordinator">
                 <Link href="/coordinators" onClick={() => setIsMobileMenuOpen(false)}>
                   Be a Coordinator
@@ -131,16 +135,14 @@ export function Navbar() {
               </Link>
             );
           })}
-          <a
-            href="https://wa.me/254711422163"
-            target="_blank"
-            rel="noreferrer"
-            className="flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl text-[10px] font-bold text-secondary"
-            data-testid="link-mobile-dock-whatsapp"
+          <Link
+            href="/contact"
+            className={`flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl text-[10px] font-bold transition-colors ${location === "/contact" ? "bg-foreground text-background" : "text-muted-foreground"}`}
+            data-testid="link-mobile-dock-contact"
           >
-            <MessageCircle className="h-4 w-4" />
-            WhatsApp
-          </a>
+            <PhoneCall className="h-4 w-4" />
+            Contact
+          </Link>
         </div>
       </div>
     </nav>
