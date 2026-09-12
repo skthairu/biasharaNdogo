@@ -7,6 +7,10 @@
  */
 
 export * from './benefit';
+export * from './bnakAiAnswer';
+export * from './bnakAiAnswerGuidanceType';
+export * from './bnakAiQuestion';
+export * from './bnakAiQuestionLanguage';
 export * from './coordinator';
 export * from './coordinatorInput';
 export * from './coordinatorInputLevel';
@@ -28,3 +32,4 @@ export * from './memberInput';
 export * from './memberStatus';
 export * from './orgStats';
 export * from './sector';
+export * from './verificationChallenge';

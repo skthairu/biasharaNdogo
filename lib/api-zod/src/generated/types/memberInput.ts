@@ -27,4 +27,8 @@ export interface MemberInput {
   kraPin?: string;
   monthlyTransactionBracket?: string;
   mpesaNumber?: string;
+  verificationToken: string;
+  verificationAnswer: string;
+  formStartedAt: number;
+  website?: string;
 }

@@ -19,6 +19,10 @@ tags:
     description: Events management
   - name: stats
     description: Organization statistics
+  - name: bnak-ai
+    description: Kenyan business guidance assistant
+  - name: verification
+    description: Anti-bot verification
 
 paths:
   /healthz:
@@ -34,6 +38,38 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /bnak-ai/ask:
+    post:
+      operationId: askBnakAi
+      tags: [bnak-ai]
+      summary: Ask the BNAK business assistant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BnakAiQuestion"
+      responses:
+        "200":
+          description: Business guidance response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BnakAiAnswer"
+
+  /verification/challenge:
+    get:
+      operationId: getVerificationChallenge
+      tags: [verification]
+      summary: Get a short-lived real-user challenge
+      responses:
+        "200":
+          description: Verification challenge
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VerificationChallenge"
 
   /stats:
     get:
@@ -429,6 +465,14 @@ components:
           type: string
         mpesaNumber:
           type: string
+        verificationToken:
+          type: string
+        verificationAnswer:
+          type: string
+        formStartedAt:
+          type: integer
+        website:
+          type: string
       required:
         - fullName
         - email
@@ -439,6 +483,49 @@ components:
         - county
         - constituency
         - ward
+        - verificationToken
+        - verificationAnswer
+        - formStartedAt
+
+    BnakAiQuestion:
+      type: object
+      properties:
+        question:
+          type: string
+          minLength: 3
+          maxLength: 1200
+        language:
+          type: string
+          enum: [English, Kiswahili]
+      required: [question, language]
+
+    BnakAiAnswer:
+      type: object
+      properties:
+        answer:
+          type: string
+        guidanceType:
+          type: string
+          enum: [general-guidance, verified-information, confirm-with-institution]
+        confirmationNote:
+          type: string
+        suggestedActions:
+          type: array
+          items:
+            type: string
+      required: [answer, guidanceType, confirmationNote, suggestedActions]
+
+    VerificationChallenge:
+      type: object
+      properties:
+        token:
+          type: string
+        question:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+      required: [token, question, expiresAt]
 
     MemberCategory:
       type: object

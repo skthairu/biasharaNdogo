@@ -21,6 +21,8 @@ import type {
 
 import type {
   Benefit,
+  BnakAiAnswer,
+  BnakAiQuestion,
   Coordinator,
   CoordinatorInput,
   Event,
@@ -35,7 +37,8 @@ import type {
   MemberCategory,
   MemberInput,
   OrgStats,
-  Sector
+  Sector,
+  VerificationChallenge
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -116,6 +119,154 @@ export function useHealthCheck<TData = Awaited<ReturnType<typeof healthCheck>>, 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getHealthCheckQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getAskBnakAiUrl = () => {
+
+
+
+
+  return `/api/bnak-ai/ask`
+}
+
+/**
+ * @summary Ask the BNAK business assistant
+ */
+export const askBnakAi = async (bnakAiQuestion: BnakAiQuestion, options?: RequestInit): Promise<BnakAiAnswer> => {
+
+  return customFetch<BnakAiAnswer>(getAskBnakAiUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      bnakAiQuestion,)
+  }
+);}
+
+
+
+
+export const getAskBnakAiMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof askBnakAi>>, TError,{data: BodyType<BnakAiQuestion>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof askBnakAi>>, TError,{data: BodyType<BnakAiQuestion>}, TContext> => {
+
+const mutationKey = ['askBnakAi'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof askBnakAi>>, {data: BodyType<BnakAiQuestion>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  askBnakAi(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AskBnakAiMutationResult = NonNullable<Awaited<ReturnType<typeof askBnakAi>>>
+    export type AskBnakAiMutationBody = BodyType<BnakAiQuestion>
+    export type AskBnakAiMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Ask the BNAK business assistant
+ */
+export const useAskBnakAi = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof askBnakAi>>, TError,{data: BodyType<BnakAiQuestion>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof askBnakAi>>,
+        TError,
+        {data: BodyType<BnakAiQuestion>},
+        TContext
+      > => {
+      return useMutation(getAskBnakAiMutationOptions(options));
+    }
+
+export const getGetVerificationChallengeUrl = () => {
+
+
+
+
+  return `/api/verification/challenge`
+}
+
+/**
+ * @summary Get a short-lived real-user challenge
+ */
+export const getVerificationChallenge = async ( options?: RequestInit): Promise<VerificationChallenge> => {
+
+  return customFetch<VerificationChallenge>(getGetVerificationChallengeUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetVerificationChallengeQueryKey = () => {
+    return [
+    `/api/verification/challenge`
+    ] as const;
+    }
+
+
+export const getGetVerificationChallengeQueryOptions = <TData = Awaited<ReturnType<typeof getVerificationChallenge>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getVerificationChallenge>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetVerificationChallengeQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getVerificationChallenge>>> = ({ signal }) => getVerificationChallenge({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getVerificationChallenge>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetVerificationChallengeQueryResult = NonNullable<Awaited<ReturnType<typeof getVerificationChallenge>>>
+export type GetVerificationChallengeQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get a short-lived real-user challenge
+ */
+
+export function useGetVerificationChallenge<TData = Awaited<ReturnType<typeof getVerificationChallenge>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getVerificationChallenge>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetVerificationChallengeQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

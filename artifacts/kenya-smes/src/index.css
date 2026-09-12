@@ -179,4 +179,8 @@
   .app-shell { max-width: 1440px; margin-inline: auto; padding-inline: clamp(1rem, 4vw, 4rem); }
   .text-balance { text-wrap: balance; }
   .soft-grid { background-image: linear-gradient(hsl(var(--foreground) / .045) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground) / .045) 1px, transparent 1px); background-size: 32px 32px; }
+  .flag-border-bottom { position: relative; }
+  .flag-border-bottom::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(to right, #101820 0% 25%, #da291c 25% 50%, #007a5e 50% 75%, #ffffff 75% 100%); border-bottom-left-radius: inherit; border-bottom-right-radius: inherit; }
+  .flag-border-top { position: relative; }
+  .flag-border-top::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(to right, #101820 0% 25%, #da291c 25% 50%, #007a5e 50% 75%, #ffffff 75% 100%); border-top-left-radius: inherit; border-top-right-radius: inherit; }
 }

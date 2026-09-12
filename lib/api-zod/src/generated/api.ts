@@ -18,6 +18,37 @@ export const HealthCheckResponse = zod.object({
 
 
 /**
+ * @summary Ask the BNAK business assistant
+ */
+export const askBnakAiBodyQuestionMin = 3;
+export const askBnakAiBodyQuestionMax = 1200;
+
+
+
+export const AskBnakAiBody = zod.object({
+  "question": zod.string().min(askBnakAiBodyQuestionMin).max(askBnakAiBodyQuestionMax),
+  "language": zod.enum(['English', 'Kiswahili'])
+})
+
+export const AskBnakAiResponse = zod.object({
+  "answer": zod.string(),
+  "guidanceType": zod.enum(['general-guidance', 'verified-information', 'confirm-with-institution']),
+  "confirmationNote": zod.string(),
+  "suggestedActions": zod.array(zod.string())
+})
+
+
+/**
+ * @summary Get a short-lived real-user challenge
+ */
+export const GetVerificationChallengeResponse = zod.object({
+  "token": zod.string(),
+  "question": zod.string(),
+  "expiresAt": zod.coerce.date()
+})
+
+
+/**
  * Returns high-level stats for the organization
  * @summary Get organization statistics
  */
@@ -99,7 +130,11 @@ export const RegisterMemberBody = zod.object({
   "businessRegistrationNumber": zod.string().optional(),
   "kraPin": zod.string().optional(),
   "monthlyTransactionBracket": zod.string().optional(),
-  "mpesaNumber": zod.string().optional()
+  "mpesaNumber": zod.string().optional(),
+  "verificationToken": zod.string(),
+  "verificationAnswer": zod.string(),
+  "formStartedAt": zod.number(),
+  "website": zod.string().optional()
 })
 
 

@@ -5,6 +5,8 @@ import membersRouter from "./members";
 import coordinatorsRouter from "./coordinators";
 import sectorsRouter from "./sectors";
 import eventsRouter from "./events";
+import bnakAiRouter from "./bnak-ai";
+import verificationRouter from "./verification";
 
 const router: IRouter = Router();
 
@@ -14,5 +16,7 @@ router.use(membersRouter);
 router.use(coordinatorsRouter);
 router.use(sectorsRouter);
 router.use(eventsRouter);
+router.use(bnakAiRouter);
+router.use(verificationRouter);
 
 export default router;

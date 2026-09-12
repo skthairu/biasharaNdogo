@@ -2,6 +2,7 @@ import { Router } from "express";
 import { db } from "@workspace/db";
 import { membersTable, memberCategoriesTable, insertMemberSchema } from "@workspace/db";
 import { eq, and } from "drizzle-orm";
+import { verifyHumanChallenge } from "./verification";
 
 const router = Router();
 
@@ -40,7 +41,12 @@ router.get("/members", async (req, res) => {
 
 router.post("/members", async (req, res) => {
   try {
-    const parsed = insertMemberSchema.safeParse(req.body);
+    const { verificationToken, verificationAnswer, formStartedAt, website, ...memberInput } = req.body;
+    if (website || !verifyHumanChallenge(verificationToken, verificationAnswer, formStartedAt)) {
+      res.status(400).json({ error: "Real-user verification failed or expired. Please try again." });
+      return;
+    }
+    const parsed = insertMemberSchema.safeParse(memberInput);
     if (!parsed.success) {
       res.status(400).json({ error: parsed.error.issues });
       return;

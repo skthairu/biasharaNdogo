@@ -61,6 +61,24 @@ const HERO_SLIDES = [
     sector: "Online Retail",
     title: "Commerce is Going Digital",
     description: "Instagram shops, WhatsApp sellers, and Jumia vendors represent the future of Kenyan retail enterprise."
+  },
+  {
+    image: "/images/e-mobility-boda.png",
+    sector: "E-Mobility",
+    title: "The Electric Revolution on Two Wheels",
+    description: "E-Bodas are transforming transport with clean energy, lower running costs, and better margins for riders."
+  },
+  {
+    image: "/images/e-mobility-matatu.png",
+    sector: "Green Transport",
+    title: "Pioneering the E-Matatu",
+    description: "Clean, silent, and cost-effective — electric commercial vehicles are redefining Kenya's public transport."
+  },
+  {
+    image: "/images/clean-business-market.png",
+    sector: "Environment",
+    title: "Clean Markets, Healthy Trade",
+    description: "Promoting sanitation, waste management, and sustainable practices for safer, thriving business spaces."
   }
 ];
 

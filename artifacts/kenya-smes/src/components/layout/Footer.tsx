@@ -39,16 +39,19 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Resources</h3>
+            <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Business Hub</h3>
             <ul className="space-y-2">
-               <li><Link href="/programs" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-policy">Policy and programmes <ArrowUpRight className="ml-1 inline h-3 w-3" /></Link></li>
-               <li><Link href="/marketplace" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-market-insights">Market insights <ArrowUpRight className="ml-1 inline h-3 w-3" /></Link></li>
-               <li><Link href="/membership" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-registry">Member registration <ArrowUpRight className="ml-1 inline h-3 w-3" /></Link></li>
+               <li><Link href="/ask-bnak" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-ask-bnak">Ask BNAK AI</Link></li>
+               <li><Link href="/money-centre" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-money-centre">Money Centre</Link></li>
+               <li><Link href="/business-health" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-business-health">Business Health Check</Link></li>
+               <li><Link href="/alerts" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-alerts">SME Alerts</Link></li>
+               <li><Link href="/recognition" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-recognition">Awards & Recognition</Link></li>
+               <li><Link href="/e-mobility" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-emobility">E-Mobility</Link></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Contact Us</h3>
+            <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Resources & Contact</h3>
             <ul className="space-y-2 text-sm text-white/60">
               <li>P.O Box 12345-00100</li>
               <li>Nairobi, Kenya</li>

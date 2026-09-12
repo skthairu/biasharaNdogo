@@ -18,6 +18,14 @@ import Admin from "@/pages/admin";
 import Services from "@/pages/services";
 import Gallery from "@/pages/gallery";
 
+import BusinessHub from "@/pages/business-hub";
+import AskBnak from "@/pages/ask-bnak";
+import MoneyCentre from "@/pages/money-centre";
+import BusinessHealth from "@/pages/business-health";
+import Alerts from "@/pages/alerts";
+import Recognition from "@/pages/recognition";
+import EMobility from "@/pages/e-mobility";
+
 const queryClient = new QueryClient();
 
 function Router() {
@@ -36,6 +44,15 @@ function Router() {
          <Route path="/gallery" component={Gallery} />
         <Route path="/admin" component={Admin} />
         <Route path="/about" component={About} />
+        
+        <Route path="/business-hub" component={BusinessHub} />
+        <Route path="/ask-bnak" component={AskBnak} />
+        <Route path="/money-centre" component={MoneyCentre} />
+        <Route path="/business-health" component={BusinessHealth} />
+        <Route path="/alerts" component={Alerts} />
+        <Route path="/recognition" component={Recognition} />
+        <Route path="/e-mobility" component={EMobility} />
+        
         <Route component={NotFound} />
       </Switch>
     </AppLayout>

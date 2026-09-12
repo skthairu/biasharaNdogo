@@ -9,10 +9,10 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
+    { href: "/business-hub", label: "Business Hub" },
+    { href: "/e-mobility", label: "E-Mobility" },
     { href: "/services", label: "Services" },
     { href: "/programs", label: "Programmes" },
-    { href: "/gallery", label: "Gallery" },
     { href: "/marketplace", label: "Marketplace" },
     { href: "/membership", label: "Membership" },
   ];
@@ -21,7 +21,7 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/90 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70" data-testid="navigation-main">
       <div className="app-shell">
         <div className="flex min-h-18 items-center justify-between gap-6 py-3">
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <Link href="/" className="flex items-center gap-2" data-testid="link-nav-home">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-base font-black leading-none text-primary-foreground shadow-sm">
                 BN
@@ -34,14 +34,14 @@ export function Navbar() {
             </Link>
           </div>
 
-          <div className="hidden items-center gap-5 lg:flex">
+          <div className="hidden min-w-0 items-center gap-3 lg:flex">
             <div className="flex items-center gap-1 rounded-full border border-border/70 bg-card/60 p-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   data-testid={`link-nav-${link.label.toLowerCase().replace(/\s+/g, "-")}`}
-                  className={`rounded-full px-3 py-2 text-sm font-semibold transition-colors hover:text-primary ${
+                  className={`rounded-full px-2.5 py-2 text-sm font-semibold transition-colors hover:text-primary ${
                     location === link.href ? "bg-foreground text-background shadow-sm" : "text-muted-foreground"
                   }`}
                 >
@@ -50,9 +50,9 @@ export function Navbar() {
               ))}
             </div>
             <div className="flex items-center gap-2">
-              <a href="tel:+254711422163" className="hidden items-center gap-1.5 text-xs font-bold text-secondary xl:flex" data-testid="link-nav-call"><PhoneCall className="h-3.5 w-3.5" /> 0711422163</a>
-              <a href="https://wa.me/254711422163" target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-xs font-bold text-secondary" data-testid="link-nav-whatsapp"><MessageCircle className="h-3.5 w-3.5" /> WhatsApp</a>
-              <Button asChild variant="outline" size="sm" className="font-semibold border-primary text-primary hover:bg-primary hover:text-white" data-testid="button-nav-coordinator">
+              <a href="tel:+254711422163" className="hidden items-center gap-1.5 text-xs font-bold text-secondary 2xl:flex" data-testid="link-nav-call"><PhoneCall className="h-3.5 w-3.5" /> 0711422163</a>
+              <a href="https://wa.me/254711422163" target="_blank" rel="noreferrer" className="hidden items-center gap-1.5 text-xs font-bold text-secondary 2xl:flex" data-testid="link-nav-whatsapp"><MessageCircle className="h-3.5 w-3.5" /> WhatsApp</a>
+              <Button asChild variant="outline" size="sm" className="hidden font-semibold border-primary text-primary hover:bg-primary hover:text-white 2xl:inline-flex" data-testid="button-nav-coordinator">
                 <Link href="/coordinators">Be a Coordinator</Link>
               </Button>
               <Button asChild variant="default" className="font-semibold shadow-sm" data-testid="button-nav-join">
@@ -113,8 +113,8 @@ export function Navbar() {
         <div className="mx-auto grid max-w-md grid-cols-5">
           {[
             { href: "/", label: "Home", icon: House },
-            { href: "/services", label: "Services", icon: BriefcaseBusiness },
-            { href: "/marketplace", label: "Market", icon: Store },
+            { href: "/business-hub", label: "Hub", icon: BriefcaseBusiness },
+            { href: "/e-mobility", label: "E-Mobility", icon: Store },
             { href: "/membership", label: "Join", icon: UserPlus },
           ].map((item) => {
             const Icon = item.icon;

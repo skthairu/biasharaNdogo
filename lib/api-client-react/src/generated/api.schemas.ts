@@ -74,6 +74,49 @@ export interface MemberInput {
   kraPin?: string;
   monthlyTransactionBracket?: string;
   mpesaNumber?: string;
+  verificationToken: string;
+  verificationAnswer: string;
+  formStartedAt: number;
+  website?: string;
+}
+
+export type BnakAiQuestionLanguage = typeof BnakAiQuestionLanguage[keyof typeof BnakAiQuestionLanguage];
+
+
+export const BnakAiQuestionLanguage = {
+  English: 'English',
+  Kiswahili: 'Kiswahili',
+} as const;
+
+export interface BnakAiQuestion {
+  /**
+     * @minLength 3
+     * @maxLength 1200
+     */
+  question: string;
+  language: BnakAiQuestionLanguage;
+}
+
+export type BnakAiAnswerGuidanceType = typeof BnakAiAnswerGuidanceType[keyof typeof BnakAiAnswerGuidanceType];
+
+
+export const BnakAiAnswerGuidanceType = {
+  'general-guidance': 'general-guidance',
+  'verified-information': 'verified-information',
+  'confirm-with-institution': 'confirm-with-institution',
+} as const;
+
+export interface BnakAiAnswer {
+  answer: string;
+  guidanceType: BnakAiAnswerGuidanceType;
+  confirmationNote: string;
+  suggestedActions: string[];
+}
+
+export interface VerificationChallenge {
+  token: string;
+  question: string;
+  expiresAt: string;
 }
 
 export interface MemberCategory {
