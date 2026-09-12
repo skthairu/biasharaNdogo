@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import React from "react";
 import { 
   BadgeCheck, ChevronDown, MapPin, MessageCircle, PackageCheck, 
   Search, SlidersHorizontal, Store, X, Zap, ShieldCheck, CheckCircle2, 
@@ -28,17 +29,20 @@ const listings = [
   { id: "cleaning-team", title: "Office & Home Cleaning Service", seller: "Jirani Clean Team", category: "Services", county: "Nakuru", price: "Request quote", image: "/images/hero-retail.png", unit: "per visit", availability: "Booking open", summary: "Scheduled cleaning support for offices, homes, shops and shared spaces." },
 ];
 
+const phoneRegex = /^(?:\+254|0)7\d{8}$/;
+const phoneMessage = "Use a valid Kenyan number (e.g. 0711422163)";
+
 const formSchema = z.object({
-  membershipNumber: z.string().min(3, "Membership number is required"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(9, "Phone number is required"),
+  membershipNumber: z.string().trim().min(3, "Membership number is required"),
+  email: z.string().trim().email("Invalid email address"),
+  phone: z.string().trim().regex(phoneRegex, phoneMessage),
   packageName: z.enum(["Starter", "Growth", "Pro", "B2B", "Enterprise"], {
     required_error: "Please select a package",
   }),
-  mpesaNumber: z.string().min(9, "M-Pesa number is required for the fee"),
-  businessSummary: z.string().min(20, "Business summary must be at least 20 characters").max(1000, "Too long"),
-  verificationAnswer: z.string().min(1, "Please answer the security question"),
-  website: z.string().optional(),
+  mpesaNumber: z.string().trim().regex(phoneRegex, phoneMessage),
+  businessSummary: z.string().trim().min(20, "Business summary must be at least 20 characters").max(1000, "Too long"),
+  verificationAnswer: z.string().trim().min(1, "Please answer the security question"),
+  website: z.string().trim().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -61,14 +65,19 @@ export default function Marketplace() {
   const clearFilters = () => { setQuery(""); setCategory("All"); setCounty("All counties"); };
 
   // Seller Application State
+  const [step, setStep] = useState(1);
   const [formStartedAt] = useState<number>(Date.now());
   const [isSuccess, setIsSuccess] = useState(false);
   const { data: challenge, isLoading: challengeLoading } = useGetVerificationChallenge();
   const { data: packages, isLoading: packagesLoading } = useListMarketplacePackages();
   const createApplication = useCreateMarketplaceSellerApplication();
+  
+  const stepRef = React.useRef<HTMLDivElement>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
+    reValidateMode: "onChange",
     defaultValues: {
       membershipNumber: "",
       email: "",
@@ -124,6 +133,38 @@ export default function Marketplace() {
 
   const selectedPackageName = form.watch("packageName");
   const selectedPackage = packages?.find(p => p.name === selectedPackageName);
+
+  const scrollToStep = () => {
+    setTimeout(() => {
+      if (stepRef.current) {
+        const y = stepRef.current.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }, 50);
+  };
+
+  const nextStep = async () => {
+    let isValid = false;
+    if (step === 1) {
+      isValid = await form.trigger(["membershipNumber", "email", "phone"]);
+    } else if (step === 2) {
+      isValid = await form.trigger(["packageName", "businessSummary", "mpesaNumber"]);
+    }
+    
+    if (isValid) {
+      setStep((s) => s + 1);
+      scrollToStep();
+    } else {
+      toast({ title: "Incomplete section", description: "Please complete all fields before continuing.", variant: "destructive" });
+    }
+  };
+
+  const prevStep = () => {
+    if (step > 1) {
+      setStep((s) => s - 1);
+      scrollToStep();
+    }
+  };
 
   return (
     <div className="min-h-screen bg-muted/20 pb-20 lg:pb-0">
@@ -289,16 +330,26 @@ export default function Marketplace() {
                 </CardFooter>
               </Card>
             ) : (
-              <Card className="border-border shadow-md" data-testid="card-seller-form">
+              <Card className="border-border shadow-md" data-testid="card-seller-form" ref={stepRef}>
                 <CardHeader className="bg-muted/30 border-b pb-6">
-                  <CardTitle className="text-2xl font-bold flex items-center gap-2"><Store className="w-5 h-5 text-primary" /> Seller Application</CardTitle>
-                  <CardDescription className="text-base mt-2">
-                    Only active BNAK members can apply. Non-matches will be rejected.
-                  </CardDescription>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-widest text-foreground/60 mb-2">Step {step} of 3</p>
+                      <CardTitle className="text-2xl font-bold flex items-center gap-2"><Store className="w-5 h-5 text-primary" /> {["Membership Match", "Package & Details", "Review & Submit"][step - 1]}</CardTitle>
+                      <CardDescription className="text-base mt-2">
+                        Only active BNAK members can apply. Non-matches will be rejected.
+                      </CardDescription>
+                    </div>
+                    <div className="flex gap-2">
+                      {[1, 2, 3].map((item) => (
+                        <span key={item} className={`h-2 w-10 rounded-full transition-colors ${item <= step ? "bg-primary" : "bg-primary/20"}`} data-testid={`progress-soko-${item}`} />
+                      ))}
+                    </div>
+                  </div>
                 </CardHeader>
                 <CardContent className="pt-8">
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" data-testid="form-soko-seller">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" data-testid="form-soko-seller" onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }}>
                       {/* Honeypot */}
                       <div className="hidden" aria-hidden="true">
                         <FormField control={form.control} name="website" render={({ field }) => (
@@ -306,113 +357,153 @@ export default function Marketplace() {
                         )} />
                       </div>
 
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <FormField control={form.control} name="membershipNumber" render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="font-semibold">BNAK Membership Number</FormLabel>
-                            <FormControl><Input placeholder="BN-XXXX-XXXX" {...field} data-testid="input-seller-membership" /></FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )} />
-                        <FormField control={form.control} name="email" render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="font-semibold">Membership Email</FormLabel>
-                            <FormControl><Input type="email" placeholder="registered@example.com" {...field} data-testid="input-seller-email" /></FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )} />
-                        <FormField control={form.control} name="phone" render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="font-semibold">Membership Phone</FormLabel>
-                            <FormControl><Input placeholder="07XX XXX XXX" {...field} data-testid="input-seller-phone" /></FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )} />
-                      </div>
-
-                      <div className="border-t pt-8">
-                        <FormField control={form.control} name="packageName" render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="font-semibold">Select Soko Package</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <FormControl>
-                                <SelectTrigger data-testid="select-seller-package">
-                                  <SelectValue placeholder="Choose a package" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {packagesLoading ? (
-                                  <SelectItem value="loading" disabled>Loading packages...</SelectItem>
-                                ) : (
-                                  packages?.map((pkg) => (
-                                    <SelectItem key={pkg.name} value={pkg.name}>
-                                      {pkg.name} - KSh {pkg.monthlyFee >= 5000 ? "5,000+" : pkg.monthlyFee.toLocaleString()}/month
-                                    </SelectItem>
-                                  ))
-                                )}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )} />
-                      </div>
-
-                      <FormField control={form.control} name="businessSummary" render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="font-semibold">Business Summary (What will you sell?)</FormLabel>
-                          <FormControl>
-                            <Textarea placeholder="Describe your main products or services..." className="min-h-24 resize-none" {...field} data-testid="input-seller-summary" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )} />
-
-                      <div className="bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-xl p-6 space-y-6">
-                        <div className="flex gap-3">
-                          <Phone className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                          <div>
-                            <h3 className="font-bold text-lg text-primary mb-1">M-Pesa Payment Verification</h3>
-                            <p className="text-sm text-foreground/80 leading-relaxed">
-                              Provide the M-Pesa number you will use to pay for the {selectedPackageName || "selected"} package{selectedPackage ? ` (KSh ${selectedPackage.monthlyFee >= 5000 ? "5,000+" : selectedPackage.monthlyFee.toLocaleString()})` : ""}.
-                            </p>
+                      {step === 1 && (
+                        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                          <div className="grid md:grid-cols-2 gap-6">
+                            <FormField control={form.control} name="membershipNumber" render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="font-semibold">BNAK Membership Number</FormLabel>
+                                <FormControl><Input placeholder="BN-XXXX-XXXX" {...field} data-testid="input-seller-membership" /></FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )} />
+                            <FormField control={form.control} name="email" render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="font-semibold">Membership Email</FormLabel>
+                                <FormControl><Input type="email" placeholder="registered@example.com" {...field} data-testid="input-seller-email" /></FormControl>
+                                <FormDescription className="text-xs">Contact verification will be enabled when a delivery provider is connected.</FormDescription>
+                                <FormMessage />
+                              </FormItem>
+                            )} />
+                            <FormField control={form.control} name="phone" render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="font-semibold">Membership Phone</FormLabel>
+                                <FormControl><Input placeholder="07XX XXX XXX" {...field} data-testid="input-seller-phone" /></FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )} />
                           </div>
                         </div>
-                        <FormField control={form.control} name="mpesaNumber" render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="font-semibold">M-Pesa Number for Payment</FormLabel>
-                            <FormControl>
-                              <Input placeholder="07XX XXX XXX" className="bg-white dark:bg-black max-w-sm" {...field} data-testid="input-seller-mpesa" />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )} />
-                      </div>
+                      )}
 
-                      <div className="bg-muted/40 border rounded-xl p-6">
-                        <div className="flex gap-3 mb-4">
-                          <ShieldCheck className="w-5 h-5 text-muted-foreground mt-0.5 shrink-0" />
-                          <div>
-                            <h3 className="font-semibold text-sm mb-1">Anti-Bot Check</h3>
-                          </div>
-                        </div>
-                        {challengeLoading ? (
-                          <div className="text-sm text-muted-foreground">Loading challenge...</div>
-                        ) : challenge ? (
-                          <FormField control={form.control} name="verificationAnswer" render={({ field }) => (
+                      {step === 2 && (
+                        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                          <FormField control={form.control} name="packageName" render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-sm font-medium">{challenge.question}</FormLabel>
-                              <FormControl><Input placeholder="Your answer" className="max-w-sm" {...field} data-testid="input-seller-verification" /></FormControl>
+                              <FormLabel className="font-semibold">Select Soko Package</FormLabel>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                  <SelectTrigger data-testid="select-seller-package">
+                                    <SelectValue placeholder="Choose a package" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {packagesLoading ? (
+                                    <SelectItem value="loading" disabled>Loading packages...</SelectItem>
+                                  ) : (
+                                    packages?.map((pkg) => (
+                                      <SelectItem key={pkg.name} value={pkg.name}>
+                                        {pkg.name} - KSh {pkg.monthlyFee >= 5000 ? "5,000+" : pkg.monthlyFee.toLocaleString()}/month
+                                      </SelectItem>
+                                    ))
+                                  )}
+                                </SelectContent>
+                              </Select>
                               <FormMessage />
                             </FormItem>
                           )} />
+
+                          <FormField control={form.control} name="businessSummary" render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="font-semibold">Business Summary (What will you sell?)</FormLabel>
+                              <FormControl>
+                                <Textarea placeholder="Describe your main products or services..." className="min-h-24 resize-none" {...field} data-testid="input-seller-summary" />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )} />
+
+                          <div className="bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-xl p-6 space-y-6">
+                            <div className="flex gap-3">
+                              <Phone className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                              <div>
+                                <h3 className="font-bold text-lg text-primary mb-1">M-Pesa Payment Verification</h3>
+                                <p className="text-sm text-foreground/80 leading-relaxed">
+                                  Provide the M-Pesa number you will use to pay for the {selectedPackageName || "selected"} package{selectedPackage ? ` (KSh ${selectedPackage.monthlyFee >= 5000 ? "5,000+" : selectedPackage.monthlyFee.toLocaleString()})` : ""}.
+                                </p>
+                              </div>
+                            </div>
+                            <FormField control={form.control} name="mpesaNumber" render={({ field }) => (
+                              <FormItem>
+                                <div className="flex items-center justify-between">
+                                  <FormLabel className="font-semibold">M-Pesa Number for Payment</FormLabel>
+                                  {form.getValues("phone") && (
+                                    <button type="button" onClick={() => form.setValue("mpesaNumber", form.getValues("phone"), { shouldValidate: true })} className="text-xs font-bold text-primary hover:underline" data-testid="button-seller-use-contact">
+                                      Use contact number
+                                    </button>
+                                  )}
+                                </div>
+                                <FormControl>
+                                  <Input placeholder="07XX XXX XXX" className="bg-white dark:bg-black max-w-sm" {...field} data-testid="input-seller-mpesa" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )} />
+                          </div>
+                        </div>
+                      )}
+
+                      {step === 3 && (
+                        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                          {selectedPackage && (
+                            <div className="bg-muted/50 rounded-xl p-6 mb-6 text-center space-y-2 border">
+                              <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Selected Package</p>
+                              <p className="text-2xl font-black">{selectedPackage.name}</p>
+                              <p className="text-primary font-bold">KSh {selectedPackage.monthlyFee.toLocaleString()} / month</p>
+                            </div>
+                          )}
+
+                          <div className="bg-muted/40 border rounded-xl p-6">
+                            <div className="flex gap-3 mb-4">
+                              <ShieldCheck className="w-5 h-5 text-muted-foreground mt-0.5 shrink-0" />
+                              <div>
+                                <h3 className="font-semibold text-sm mb-1">Anti-Bot Check</h3>
+                              </div>
+                            </div>
+                            {challengeLoading ? (
+                              <div className="text-sm text-muted-foreground">Loading challenge...</div>
+                            ) : challenge ? (
+                              <FormField control={form.control} name="verificationAnswer" render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="text-sm font-medium">{challenge.question}</FormLabel>
+                                  <FormControl><Input placeholder="Your answer" className="max-w-sm" {...field} data-testid="input-seller-verification" /></FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )} />
+                            ) : (
+                              <div className="text-sm text-destructive">Failed to load challenge.</div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between border-t pt-6 mt-8">
+                        {step > 1 ? (
+                          <Button type="button" variant="outline" onClick={prevStep} data-testid="button-seller-back">
+                            Back
+                          </Button>
+                        ) : <span />}
+                        
+                        {step < 3 ? (
+                          <Button type="button" onClick={nextStep} data-testid="button-seller-continue">
+                            Continue
+                          </Button>
                         ) : (
-                          <div className="text-sm text-destructive">Failed to load challenge.</div>
+                          <Button type="submit" disabled={createApplication.isPending || !challenge} data-testid="button-submit-seller">
+                            {createApplication.isPending ? "Submitting Application..." : "Submit Application"}
+                          </Button>
                         )}
                       </div>
-
-                      <Button type="submit" size="lg" className="w-full font-bold h-14 text-base" disabled={createApplication.isPending || !challenge} data-testid="button-submit-seller">
-                        {createApplication.isPending ? "Submitting Application..." : "Submit Seller Application"}
-                      </Button>
                     </form>
                   </Form>
                 </CardContent>

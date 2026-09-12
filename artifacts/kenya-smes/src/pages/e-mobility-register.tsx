@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { Zap, ShieldCheck, CheckCircle2, ChevronLeft, Building, User, Phone, MapPin } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -13,30 +13,37 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useCreateEmobilityRegistration, useGetVerificationChallenge } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
 
+const phoneRegex = /^(?:\+254|0)7\d{8}$/;
+const phoneMessage = "Use a valid Kenyan number (e.g. 0711422163)";
+
 const formSchema = z.object({
-  fullName: z.string().min(2, "Full name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(9, "Phone number is required"),
-  businessName: z.string().min(2, "Business/Fleet name is required"),
-  operatorType: z.string().min(2, "Select an operator type"),
-  county: z.string().min(2, "County is required"),
-  mpesaNumber: z.string().min(9, "M-Pesa number is required for the fee"),
-  verificationAnswer: z.string().min(1, "Please answer the security question"),
-  website: z.string().optional(),
+  fullName: z.string().trim().min(2, "Full name must be at least 2 characters"),
+  email: z.string().trim().email("Invalid email address"),
+  phone: z.string().trim().regex(phoneRegex, phoneMessage),
+  businessName: z.string().trim().min(2, "Business/Fleet name is required"),
+  operatorType: z.string().trim().min(2, "Select an operator type"),
+  county: z.string().trim().min(2, "County is required"),
+  mpesaNumber: z.string().trim().regex(phoneRegex, phoneMessage),
+  verificationAnswer: z.string().trim().min(1, "Please answer the security question"),
+  website: z.string().trim().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 export default function EMobilityRegister() {
   const { toast } = useToast();
+  const [step, setStep] = useState(1);
   const [formStartedAt] = useState<number>(Date.now());
   const [isSuccess, setIsSuccess] = useState(false);
+  const stepRef = React.useRef<HTMLDivElement>(null);
   
   const { data: challenge, isLoading: challengeLoading } = useGetVerificationChallenge();
   const createRegistration = useCreateEmobilityRegistration();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
+    reValidateMode: "onChange",
     defaultValues: {
       fullName: "",
       email: "",
@@ -49,6 +56,38 @@ export default function EMobilityRegister() {
       website: "",
     },
   });
+
+  const scrollToStep = () => {
+    setTimeout(() => {
+      if (stepRef.current) {
+        const y = stepRef.current.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }, 50);
+  };
+
+  const nextStep = async () => {
+    let isValid = false;
+    if (step === 1) {
+      isValid = await form.trigger(["fullName", "email", "phone", "county"]);
+    } else if (step === 2) {
+      isValid = await form.trigger(["businessName", "operatorType"]);
+    }
+    
+    if (isValid) {
+      setStep((s) => s + 1);
+      scrollToStep();
+    } else {
+      toast({ title: "Incomplete section", description: "Please complete all fields correctly before continuing.", variant: "destructive" });
+    }
+  };
+
+  const prevStep = () => {
+    if (step > 1) {
+      setStep((s) => s - 1);
+      scrollToStep();
+    }
+  };
 
   const onSubmit = (values: FormValues) => {
     if (!challenge) {
@@ -171,16 +210,26 @@ export default function EMobilityRegister() {
 
       <div className="app-shell py-12">
         <div className="max-w-3xl mx-auto">
-          <Card className="border-border shadow-md" data-testid="card-registration-form">
+          <Card className="border-border shadow-md" data-testid="card-registration-form" ref={stepRef}>
             <CardHeader className="bg-muted/30 border-b pb-6">
-              <CardTitle className="text-2xl font-bold flex items-center gap-2"><User className="w-5 h-5 text-emerald-600" /> Apply for Access</CardTitle>
-              <CardDescription className="text-base mt-2">
-                Provide your operator details. BNAK will verify this information before granting access to our partner network.
-              </CardDescription>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest text-foreground/60 mb-2">Step {step} of 3</p>
+                  <CardTitle className="text-2xl font-bold flex items-center gap-2"><User className="w-5 h-5 text-emerald-600" /> {["Applicant Details", "Business Profile", "Fee & Verification"][step - 1]}</CardTitle>
+                  <CardDescription className="text-base mt-2">
+                    Provide your operator details. BNAK will verify this information before granting access to our partner network.
+                  </CardDescription>
+                </div>
+                <div className="flex gap-2">
+                  {[1, 2, 3].map((item) => (
+                    <span key={item} className={`h-2 w-10 rounded-full transition-colors ${item <= step ? "bg-emerald-500" : "bg-emerald-500/20"}`} data-testid={`progress-emobility-${item}`} />
+                  ))}
+                </div>
+              </div>
             </CardHeader>
             <CardContent className="pt-8">
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" data-testid="form-emobility-registration">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" data-testid="form-emobility-registration" onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }}>
                   
                   {/* Honeypot */}
                   <div className="hidden" aria-hidden="true">
@@ -196,182 +245,213 @@ export default function EMobilityRegister() {
                     />
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <FormField
-                      control={form.control}
-                      name="fullName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="font-semibold">Full Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="John Doe" {...field} data-testid="input-fullname" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="font-semibold">Email Address</FormLabel>
-                          <FormControl>
-                            <Input type="email" placeholder="john@example.com" {...field} data-testid="input-email" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="font-semibold">Phone Number</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                              <Input className="pl-9" placeholder="07XX XXX XXX" {...field} data-testid="input-phone" />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="county"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="font-semibold">Operating County</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                              <Input className="pl-9" placeholder="e.g. Nairobi" {...field} data-testid="input-county" />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6 border-t pt-8">
-                    <FormField
-                      control={form.control}
-                      name="businessName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="font-semibold">Business or Fleet Name</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Building className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                              <Input className="pl-9" placeholder="Fast Riders Ltd" {...field} data-testid="input-business-name" />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="operatorType"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="font-semibold">Operator Type</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                              <SelectTrigger data-testid="select-operator-type">
-                                <SelectValue placeholder="Select type" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="E-Boda Rider">E-Boda Rider</SelectItem>
-                              <SelectItem value="E-Boda Fleet Owner">E-Boda Fleet Owner</SelectItem>
-                              <SelectItem value="E-Matatu / Bus">E-Matatu / Bus Operator</SelectItem>
-                              <SelectItem value="Commercial Delivery">Commercial / Delivery</SelectItem>
-                              <SelectItem value="Infrastructure Provider">Infrastructure Provider</SelectItem>
-                              <SelectItem value="Other">Other</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900 rounded-xl p-6 space-y-6">
-                    <div className="flex gap-3">
-                      <Zap className="w-6 h-6 text-emerald-600 mt-1 shrink-0" />
-                      <div>
-                        <h3 className="font-bold text-lg text-emerald-900 dark:text-emerald-100 mb-1">Processing Fee: KSh 150</h3>
-                        <p className="text-sm text-emerald-700 dark:text-emerald-300 leading-relaxed">
-                          Provide the M-Pesa number you will use to pay the registration fee. We will verify the payment against this number before approving your application.
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <FormField
-                      control={form.control}
-                      name="mpesaNumber"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="font-semibold text-emerald-900 dark:text-emerald-100">M-Pesa Number for Payment</FormLabel>
-                          <FormControl>
-                            <Input placeholder="07XX XXX XXX" className="bg-white dark:bg-black max-w-sm" {...field} data-testid="input-mpesa-number" />
-                          </FormControl>
-                          <FormDescription className="text-emerald-600/80 dark:text-emerald-400/80">
-                            Must match the number making the payment.
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="bg-muted/40 border rounded-xl p-6">
-                    <div className="flex gap-3 mb-4">
-                      <ShieldCheck className="w-5 h-5 text-muted-foreground mt-0.5 shrink-0" />
-                      <div>
-                        <h3 className="font-semibold text-sm mb-1">Security Check</h3>
-                        <p className="text-xs text-muted-foreground">Verify you are human to proceed.</p>
-                      </div>
-                    </div>
-                    {challengeLoading ? (
-                      <div className="h-20 flex items-center justify-center text-sm text-muted-foreground">Loading challenge...</div>
-                    ) : challenge ? (
+                  {step === 1 && (
+                    <div className="grid md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
                       <FormField
                         control={form.control}
-                        name="verificationAnswer"
+                        name="fullName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-medium">{challenge.question}</FormLabel>
+                            <FormLabel className="font-semibold">Full Name</FormLabel>
                             <FormControl>
-                              <Input placeholder="Your answer" className="max-w-sm" {...field} data-testid="input-verification-answer" />
+                              <Input placeholder="John Doe" {...field} data-testid="input-fullname" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="font-semibold">Email Address</FormLabel>
+                            <FormControl>
+                              <Input type="email" placeholder="john@example.com" {...field} data-testid="input-email" />
+                            </FormControl>
+                            <FormDescription className="text-xs">Contact verification will be enabled when a delivery provider is connected.</FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="font-semibold">Phone Number</FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                <Input className="pl-9" placeholder="07XX XXX XXX" {...field} data-testid="input-phone" />
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="county"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="font-semibold">Operating County</FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                <Input className="pl-9" placeholder="e.g. Nairobi" {...field} data-testid="input-county" />
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
+
+                  {step === 2 && (
+                    <div className="grid md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                      <FormField
+                        control={form.control}
+                        name="businessName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="font-semibold">Business or Fleet Name</FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <Building className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                <Input className="pl-9" placeholder="Fast Riders Ltd" {...field} data-testid="input-business-name" />
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="operatorType"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="font-semibold">Operator Type</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger data-testid="select-operator-type">
+                                  <SelectValue placeholder="Select type" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="E-Boda Rider">E-Boda Rider</SelectItem>
+                                <SelectItem value="E-Boda Fleet Owner">E-Boda Fleet Owner</SelectItem>
+                                <SelectItem value="E-Matatu / Bus">E-Matatu / Bus Operator</SelectItem>
+                                <SelectItem value="Commercial Delivery">Commercial / Delivery</SelectItem>
+                                <SelectItem value="Infrastructure Provider">Infrastructure Provider</SelectItem>
+                                <SelectItem value="Other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
+
+                  {step === 3 && (
+                    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                      <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900 rounded-xl p-6 space-y-6">
+                        <div className="flex gap-3">
+                          <Zap className="w-6 h-6 text-emerald-600 mt-1 shrink-0" />
+                          <div>
+                            <h3 className="font-bold text-lg text-emerald-900 dark:text-emerald-100 mb-1">Processing Fee: KSh 150</h3>
+                            <p className="text-sm text-emerald-700 dark:text-emerald-300 leading-relaxed">
+                              Provide the M-Pesa number you will use to pay the registration fee. We will verify the payment against this number before approving your application.
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <FormField
+                          control={form.control}
+                          name="mpesaNumber"
+                          render={({ field }) => (
+                            <FormItem>
+                              <div className="flex items-center justify-between">
+                                <FormLabel className="font-semibold text-emerald-900 dark:text-emerald-100">M-Pesa Number for Payment</FormLabel>
+                                {form.getValues("phone") && (
+                                  <button type="button" onClick={() => form.setValue("mpesaNumber", form.getValues("phone"), { shouldValidate: true })} className="text-xs font-bold text-emerald-700 hover:underline" data-testid="button-emobility-use-contact">
+                                    Use contact number
+                                  </button>
+                                )}
+                              </div>
+                              <FormControl>
+                                <Input placeholder="07XX XXX XXX" className="bg-white dark:bg-black max-w-sm" {...field} data-testid="input-mpesa-number" />
+                              </FormControl>
+                              <FormDescription className="text-emerald-600/80 dark:text-emerald-400/80">
+                                Must match the number making the payment.
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <div className="bg-muted/40 border rounded-xl p-6">
+                        <div className="flex gap-3 mb-4">
+                          <ShieldCheck className="w-5 h-5 text-muted-foreground mt-0.5 shrink-0" />
+                          <div>
+                            <h3 className="font-semibold text-sm mb-1">Security Check</h3>
+                            <p className="text-xs text-muted-foreground">Verify you are human to proceed.</p>
+                          </div>
+                        </div>
+                        {challengeLoading ? (
+                          <div className="h-20 flex items-center justify-center text-sm text-muted-foreground">Loading challenge...</div>
+                        ) : challenge ? (
+                          <FormField
+                            control={form.control}
+                            name="verificationAnswer"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-sm font-medium">{challenge.question}</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Your answer" className="max-w-sm" {...field} data-testid="input-verification-answer" />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        ) : (
+                          <div className="text-sm text-destructive">Failed to load security challenge.</div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex items-center justify-between border-t pt-6 mt-8">
+                    {step > 1 ? (
+                      <Button type="button" variant="outline" onClick={prevStep} data-testid="button-emobility-back">
+                        Back
+                      </Button>
+                    ) : <span />}
+                    
+                    {step < 3 ? (
+                      <Button type="button" onClick={nextStep} data-testid="button-emobility-continue" className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold">
+                        Continue
+                      </Button>
                     ) : (
-                      <div className="text-sm text-destructive">Failed to load security challenge.</div>
+                      <Button 
+                        type="submit" 
+                        className="font-bold bg-emerald-600 hover:bg-emerald-700 text-white" 
+                        disabled={createRegistration.isPending || !challenge}
+                        data-testid="button-submit-registration"
+                      >
+                        {createRegistration.isPending ? "Submitting..." : "Submit & Proceed"}
+                      </Button>
                     )}
                   </div>
-
-                  <Button 
-                    type="submit" 
-                    size="lg" 
-                    className="w-full font-bold bg-emerald-600 hover:bg-emerald-700 h-14 text-base" 
-                    disabled={createRegistration.isPending || !challenge}
-                    data-testid="button-submit-registration"
-                  >
-                    {createRegistration.isPending ? "Submitting..." : "Submit Registration & Proceed to Payment"}
-                  </Button>
                   
-                  <div className="text-center text-xs text-muted-foreground max-w-md mx-auto leading-relaxed">
-                    By submitting, you agree to BNAK's verification process. Registration implies joining the network but does not guarantee immediate vehicle or loan approval from partners.
-                  </div>
+                  {step === 3 && (
+                    <div className="text-center text-xs text-muted-foreground max-w-md mx-auto leading-relaxed mt-6">
+                      By submitting, you agree to BNAK's verification process. Registration implies joining the network but does not guarantee immediate vehicle or loan approval from partners.
+                    </div>
+                  )}
                 </form>
               </Form>
             </CardContent>

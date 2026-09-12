@@ -33,6 +33,7 @@ export function Footer() {
                <li><Link href="/partners" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-partners">Partners</Link></li>
                <li><Link href="/soko" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-soko">Soko</Link></li>
               <li><Link href="/events" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-events">Upcoming Events</Link></li>
+              <li><Link href="/donate" className="text-sm text-white/60 hover:text-primary transition-colors font-medium" data-testid="link-footer-donate">Donate</Link></li>
               <li><Link href="/membership" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-membership">Become a Member</Link></li>
               <li><Link href="/coordinators" className="text-sm text-white/60 hover:text-primary transition-colors" data-testid="link-footer-coordinators">Coordinator Portal</Link></li>
             </ul>

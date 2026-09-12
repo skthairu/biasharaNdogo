@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { BriefcaseBusiness, House, Menu, MessageCircle, PhoneCall, Store, UserPlus, X } from "lucide-react";
+import { BriefcaseBusiness, HeartHandshake, House, Menu, MessageCircle, PhoneCall, Store, UserPlus, X } from "lucide-react";
 import { useState } from "react";
 
 export function Navbar() {
@@ -9,13 +9,13 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
+    { href: "/soko", label: "Soko" },
     { href: "/business-hub", label: "Business Hub" },
     { href: "/e-mobility", label: "E-Mobility" },
     { href: "/services", label: "Services" },
     { href: "/programs", label: "Programmes" },
-    { href: "/soko", label: "Soko" },
     { href: "/contact", label: "Contact" },
-    { href: "/membership", label: "Membership" },
+    { href: "/donate", label: "Donate" },
   ];
 
   return (
@@ -43,7 +43,7 @@ export function Navbar() {
                   href={link.href}
                   data-testid={`link-nav-${link.label.toLowerCase().replace(/\s+/g, "-")}`}
                   className={`rounded-full px-2.5 py-2 text-sm font-semibold transition-colors hover:text-primary ${
-                    location === link.href ? "bg-foreground text-background shadow-sm" : "text-muted-foreground"
+                    location === link.href ? "bg-foreground text-background shadow-sm" : link.href === "/donate" ? "text-primary bg-primary/5 hover:bg-primary/10" : "text-muted-foreground"
                   }`}
                 >
                   {link.label}
@@ -117,8 +117,9 @@ export function Navbar() {
         <div className="mx-auto grid max-w-md grid-cols-5">
           {[
             { href: "/", label: "Home", icon: House },
+            { href: "/soko", label: "Soko", icon: Store },
             { href: "/business-hub", label: "Hub", icon: BriefcaseBusiness },
-            { href: "/e-mobility", label: "E-Mobility", icon: Store },
+            { href: "/donate", label: "Donate", icon: HeartHandshake },
             { href: "/membership", label: "Join", icon: UserPlus },
           ].map((item) => {
             const Icon = item.icon;
@@ -135,14 +136,6 @@ export function Navbar() {
               </Link>
             );
           })}
-          <Link
-            href="/contact"
-            className={`flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl text-[10px] font-bold transition-colors ${location === "/contact" ? "bg-foreground text-background" : "text-muted-foreground"}`}
-            data-testid="link-mobile-dock-contact"
-          >
-            <PhoneCall className="h-4 w-4" />
-            Contact
-          </Link>
         </div>
       </div>
     </nav>

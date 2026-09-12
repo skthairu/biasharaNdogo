@@ -19,6 +19,7 @@ import Marketplace from "@/pages/marketplace";
 import Admin from "@/pages/admin";
 import Services from "@/pages/services";
 import Gallery from "@/pages/gallery";
+import Donate from "@/pages/donate";
 
 import BusinessHub from "@/pages/business-hub";
 import AskBnak from "@/pages/ask-bnak";
@@ -48,6 +49,7 @@ function Router() {
          <Route path="/gallery" component={Gallery} />
         <Route path="/admin" component={Admin} />
         <Route path="/about" component={About} />
+        <Route path="/donate" component={Donate} />
         
         <Route path="/business-hub" component={BusinessHub} />
         <Route path="/ask-bnak" component={AskBnak} />
