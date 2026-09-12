@@ -4,7 +4,7 @@ import { Footer } from "./Footer";
 
 export function AppLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col bg-background font-sans">
+    <div className="min-h-screen flex flex-col bg-background pb-20 font-sans lg:pb-0">
       <Navbar />
       <main className="flex-1">
         {children}

@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Menu, X, PhoneCall, MessageCircle } from "lucide-react";
+import { BriefcaseBusiness, House, Menu, MessageCircle, PhoneCall, Store, UserPlus, X } from "lucide-react";
 import { useState } from "react";
 
 export function Navbar() {
@@ -108,6 +108,41 @@ export function Navbar() {
           </div>
         </div>
       )}
+
+      <div className="fixed inset-x-0 bottom-0 z-[60] border-t border-border/80 bg-background/95 px-2 pb-[max(.45rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-12px_36px_rgba(16,35,27,0.12)] backdrop-blur-xl lg:hidden" data-testid="navigation-mobile-dock">
+        <div className="mx-auto grid max-w-md grid-cols-5">
+          {[
+            { href: "/", label: "Home", icon: House },
+            { href: "/services", label: "Services", icon: BriefcaseBusiness },
+            { href: "/marketplace", label: "Market", icon: Store },
+            { href: "/membership", label: "Join", icon: UserPlus },
+          ].map((item) => {
+            const Icon = item.icon;
+            const active = location === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl text-[10px] font-bold transition-colors ${active ? "bg-foreground text-background" : "text-muted-foreground"}`}
+                data-testid={`link-mobile-dock-${item.label.toLowerCase()}`}
+              >
+                <Icon className="h-4 w-4" />
+                {item.label}
+              </Link>
+            );
+          })}
+          <a
+            href="https://wa.me/254711422163"
+            target="_blank"
+            rel="noreferrer"
+            className="flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl text-[10px] font-bold text-secondary"
+            data-testid="link-mobile-dock-whatsapp"
+          >
+            <MessageCircle className="h-4 w-4" />
+            WhatsApp
+          </a>
+        </div>
+      </div>
     </nav>
   );
 }
