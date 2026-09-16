@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useCreateDonationCheckout } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -21,8 +22,29 @@ import {
 export default function Donate() {
   const [selectedAmount, setSelectedAmount] = useState<number | "custom">(1000);
   const [customAmount, setCustomAmount] = useState<string>("");
+  const [donorEmail, setDonorEmail] = useState("");
 
   const suggestedAmounts = [500, 1000, 2500];
+  const donationCheckout = useCreateDonationCheckout();
+  const donationStatus = new URLSearchParams(window.location.search).get("donation");
+  const amount =
+    selectedAmount === "custom" ? Number(customAmount) : selectedAmount;
+  const amountIsValid = Number.isInteger(amount) && amount >= 100 && amount <= 1_000_000;
+
+  const startCardCheckout = () => {
+    if (!amountIsValid || donationCheckout.isPending) return;
+
+    donationCheckout.mutate({
+      data: {
+        amount,
+        ...(donorEmail.trim() ? { donorEmail: donorEmail.trim() } : {}),
+      },
+    }, {
+      onSuccess: (checkout) => {
+        window.location.assign(checkout.checkoutUrl);
+      },
+    });
+  };
 
   const getWhatsAppMessage = () => {
     let amountStr = "a contribution";
@@ -59,14 +81,25 @@ export default function Donate() {
               <div className="bg-muted px-6 py-4 border-b border-border/50 flex items-start gap-3">
                 <Info className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 <div className="text-sm text-foreground/80 leading-relaxed">
-                  <span className="font-semibold text-foreground">Important Note:</span> Secure online and M-Pesa donation collection will be enabled once BNAK has connected an approved payment provider. Until then, please use our official contacts to request instructions.
+                   <span className="font-semibold text-foreground">Payment options:</span> International card donations are securely hosted by Stripe. M-Pesa STK is not currently active; use the official BNAK line for approved M-Pesa instructions.
                 </div>
               </div>
+
+              {donationStatus === "success" && (
+                <div className="mx-6 mt-6 rounded-lg border border-secondary/30 bg-secondary/10 p-4 text-sm text-foreground">
+                  Checkout returned successfully. BNAK verifies payment confirmation through Stripe before acknowledging a donation; this message alone is not proof of payment.
+                </div>
+              )}
+              {donationStatus === "cancelled" && (
+                <div className="mx-6 mt-6 rounded-lg border border-border bg-muted p-4 text-sm text-foreground">
+                  Your Stripe checkout was cancelled. No payment is confirmed.
+                </div>
+              )}
               
               <CardHeader className="pb-4">
                 <CardTitle>Select an Amount</CardTitle>
                 <CardDescription>
-                  This amount will be pre-filled in your WhatsApp message.
+                   Choose a whole KSh amount between KSh 100 and KSh 1,000,000.
                 </CardDescription>
               </CardHeader>
               
@@ -112,9 +145,11 @@ export default function Donate() {
                       <Input
                         id="custom-amount"
                         type="number"
-                        min="10"
+                        min="100"
+                        max="1000000"
+                        step="1"
                         className="pl-12 font-bold text-lg h-12"
-                        placeholder="0.00"
+                        placeholder="100"
                         value={customAmount}
                         onChange={(e) => setCustomAmount(e.target.value)}
                         data-testid="input-custom-amount"
@@ -122,6 +157,46 @@ export default function Donate() {
                     </div>
                   </div>
                 )}
+
+                <div className="space-y-2">
+                  <label htmlFor="donor-email" className="text-sm font-medium">
+                    Email for your Stripe receipt (optional)
+                  </label>
+                  <Input
+                    id="donor-email"
+                    type="email"
+                    value={donorEmail}
+                    onChange={(event) => setDonorEmail(event.target.value)}
+                    placeholder="you@example.com"
+                    autoComplete="email"
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <Button
+                    type="button"
+                    className="h-12 w-full shadow-sm"
+                    onClick={startCardCheckout}
+                    disabled={!amountIsValid || donationCheckout.isPending}
+                    data-testid="btn-card-donate"
+                  >
+                    {donationCheckout.isPending
+                      ? "Opening secure checkout…"
+                      : "Donate by international card"}
+                  </Button>
+                  {donationCheckout.isError && (
+                    <p className="text-sm text-destructive" role="alert">
+                      {donationCheckout.error instanceof Error
+                        ? donationCheckout.error.message
+                        : "Unable to open Stripe checkout. Please try again."}
+                    </p>
+                  )}
+                  {!amountIsValid && selectedAmount === "custom" && customAmount && (
+                    <p className="text-sm text-destructive">
+                      Enter a whole amount from KSh 100 to KSh 1,000,000.
+                    </p>
+                  )}
+                </div>
 
                 <div className="rounded-xl border border-border/60 bg-card p-5 space-y-4 shadow-sm">
                   <h3 className="font-semibold text-sm">How to send your contribution</h3>

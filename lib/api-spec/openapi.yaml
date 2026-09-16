@@ -27,6 +27,10 @@ tags:
     description: Separate paid BNAK Marketplace seller system
   - name: emobility
     description: E-Mobility programme registrations
+  - name: donations
+    description: BNAK donation checkout
+  - name: partners
+    description: Partnership applications and institutional engagement
 
 paths:
   /healthz:
@@ -387,6 +391,50 @@ paths:
         "400":
           description: Invalid registration or anti-bot verification
 
+  /donations/checkout:
+    post:
+      operationId: createDonationCheckout
+      tags: [donations]
+      summary: Create a hosted Stripe checkout session for a donation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DonationCheckoutInput"
+      responses:
+        "201":
+          description: Hosted Stripe checkout session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DonationCheckout"
+        "400":
+          description: Invalid donation amount or email
+        "502":
+          description: Payment provider unavailable
+
+  /partners/applications:
+    post:
+      operationId: createPartnerApplication
+      tags: [partners]
+      summary: Submit a partnership application for BNAK review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PartnerApplicationInput"
+      responses:
+        "202":
+          description: Application received and pending review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PartnerApplication"
+        "400":
+          description: Invalid application or anti-bot verification
+
 components:
   schemas:
     HealthStatus:
@@ -703,6 +751,29 @@ components:
           format: date-time
       required: [id, fullName, businessName, operatorType, county, fee, status, paymentStatus, createdAt]
 
+    DonationCheckoutInput:
+      type: object
+      properties:
+        amount:
+          type: integer
+          minimum: 100
+          maximum: 1000000
+          description: Donation amount in whole Kenyan shillings
+        donorEmail:
+          type: string
+          format: email
+      required: [amount]
+
+    DonationCheckout:
+      type: object
+      properties:
+        checkoutUrl:
+          type: string
+          format: uri
+        sessionId:
+          type: string
+      required: [checkoutUrl, sessionId]
+
     MemberCategory:
       type: object
       properties:
@@ -719,6 +790,81 @@ components:
           items:
             type: string
       required: [id, name, description, annualFee, benefits]
+
+    PartnerApplication:
+      type: object
+      properties:
+        id:
+          type: integer
+        organisationName:
+          type: string
+        contactName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        website:
+          type: ["string", "null"]
+        partnershipType:
+          type: string
+          enum: [Strategic Partner, Programme Partner, Implementing Partner, Funding Partner, Sponsor, Technical Partner, Knowledge Partner, Market Partner]
+        organisationSummary:
+          type: string
+        proposedContribution:
+          type: string
+        countyOrCoverage:
+          type: string
+        status:
+          type: string
+          enum: [pending_review, approved, rejected]
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, organisationName, contactName, email, phone, partnershipType, organisationSummary, proposedContribution, countyOrCoverage, status, createdAt]
+
+    PartnerApplicationInput:
+      type: object
+      properties:
+        organisationName:
+          type: string
+          minLength: 2
+        contactName:
+          type: string
+          minLength: 2
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+          minLength: 9
+        website:
+          type: string
+          format: uri
+        partnershipType:
+          type: string
+          enum: [Strategic Partner, Programme Partner, Implementing Partner, Funding Partner, Sponsor, Technical Partner, Knowledge Partner, Market Partner]
+        organisationSummary:
+          type: string
+          minLength: 20
+          maxLength: 1500
+        proposedContribution:
+          type: string
+          minLength: 20
+          maxLength: 1500
+        countyOrCoverage:
+          type: string
+          minLength: 2
+        verificationToken:
+          type: string
+        verificationAnswer:
+          type: string
+        formStartedAt:
+          type: integer
+        honeypot:
+          type: string
+      required: [organisationName, contactName, email, phone, partnershipType, organisationSummary, proposedContribution, countyOrCoverage, verificationToken, verificationAnswer, formStartedAt]
 
     Coordinator:
       type: object

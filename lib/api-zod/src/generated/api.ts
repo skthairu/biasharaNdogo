@@ -374,3 +374,53 @@ export const CreateEmobilityRegistrationBody = zod.object({
 })
 
 
+/**
+ * @summary Create a hosted Stripe checkout session for a donation
+ */
+export const createDonationCheckoutBodyAmountMin = 100;
+export const createDonationCheckoutBodyAmountMax = 1000000;
+
+
+
+export const CreateDonationCheckoutBody = zod.object({
+  "amount": zod.number().min(createDonationCheckoutBodyAmountMin).max(createDonationCheckoutBodyAmountMax).describe('Donation amount in whole Kenyan shillings'),
+  "donorEmail": zod.string().email().optional()
+})
+
+
+/**
+ * @summary Submit a partnership application for BNAK review
+ */
+export const createPartnerApplicationBodyOrganisationNameMin = 2;
+
+export const createPartnerApplicationBodyContactNameMin = 2;
+
+export const createPartnerApplicationBodyPhoneMin = 9;
+
+export const createPartnerApplicationBodyOrganisationSummaryMin = 20;
+export const createPartnerApplicationBodyOrganisationSummaryMax = 1500;
+
+export const createPartnerApplicationBodyProposedContributionMin = 20;
+export const createPartnerApplicationBodyProposedContributionMax = 1500;
+
+export const createPartnerApplicationBodyCountyOrCoverageMin = 2;
+
+
+
+export const CreatePartnerApplicationBody = zod.object({
+  "organisationName": zod.string().min(createPartnerApplicationBodyOrganisationNameMin),
+  "contactName": zod.string().min(createPartnerApplicationBodyContactNameMin),
+  "email": zod.string().email(),
+  "phone": zod.string().min(createPartnerApplicationBodyPhoneMin),
+  "website": zod.string().url().optional(),
+  "partnershipType": zod.enum(['Strategic Partner', 'Programme Partner', 'Implementing Partner', 'Funding Partner', 'Sponsor', 'Technical Partner', 'Knowledge Partner', 'Market Partner']),
+  "organisationSummary": zod.string().min(createPartnerApplicationBodyOrganisationSummaryMin).max(createPartnerApplicationBodyOrganisationSummaryMax),
+  "proposedContribution": zod.string().min(createPartnerApplicationBodyProposedContributionMin).max(createPartnerApplicationBodyProposedContributionMax),
+  "countyOrCoverage": zod.string().min(createPartnerApplicationBodyCountyOrCoverageMin),
+  "verificationToken": zod.string(),
+  "verificationAnswer": zod.string(),
+  "formStartedAt": zod.number(),
+  "honeypot": zod.string().optional()
+})
+
+

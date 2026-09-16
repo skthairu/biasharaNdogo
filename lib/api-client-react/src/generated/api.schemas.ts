@@ -200,12 +200,108 @@ export interface EmobilityRegistration {
   createdAt: string;
 }
 
+export interface DonationCheckoutInput {
+  /**
+     * Donation amount in whole Kenyan shillings
+     * @minimum 100
+     * @maximum 1000000
+     */
+  amount: number;
+  donorEmail?: string;
+}
+
+export interface DonationCheckout {
+  checkoutUrl: string;
+  sessionId: string;
+}
+
 export interface MemberCategory {
   id: number;
   name: string;
   description: string;
   annualFee: number;
   benefits: string[];
+}
+
+export type PartnerApplicationPartnershipType = typeof PartnerApplicationPartnershipType[keyof typeof PartnerApplicationPartnershipType];
+
+
+export const PartnerApplicationPartnershipType = {
+  Strategic_Partner: 'Strategic Partner',
+  Programme_Partner: 'Programme Partner',
+  Implementing_Partner: 'Implementing Partner',
+  Funding_Partner: 'Funding Partner',
+  Sponsor: 'Sponsor',
+  Technical_Partner: 'Technical Partner',
+  Knowledge_Partner: 'Knowledge Partner',
+  Market_Partner: 'Market Partner',
+} as const;
+
+export type PartnerApplicationStatus = typeof PartnerApplicationStatus[keyof typeof PartnerApplicationStatus];
+
+
+export const PartnerApplicationStatus = {
+  pending_review: 'pending_review',
+  approved: 'approved',
+  rejected: 'rejected',
+} as const;
+
+export interface PartnerApplication {
+  id: number;
+  organisationName: string;
+  contactName: string;
+  email: string;
+  phone: string;
+  /** @nullable */
+  website?: string | null;
+  partnershipType: PartnerApplicationPartnershipType;
+  organisationSummary: string;
+  proposedContribution: string;
+  countyOrCoverage: string;
+  status: PartnerApplicationStatus;
+  createdAt: string;
+}
+
+export type PartnerApplicationInputPartnershipType = typeof PartnerApplicationInputPartnershipType[keyof typeof PartnerApplicationInputPartnershipType];
+
+
+export const PartnerApplicationInputPartnershipType = {
+  Strategic_Partner: 'Strategic Partner',
+  Programme_Partner: 'Programme Partner',
+  Implementing_Partner: 'Implementing Partner',
+  Funding_Partner: 'Funding Partner',
+  Sponsor: 'Sponsor',
+  Technical_Partner: 'Technical Partner',
+  Knowledge_Partner: 'Knowledge Partner',
+  Market_Partner: 'Market Partner',
+} as const;
+
+export interface PartnerApplicationInput {
+  /** @minLength 2 */
+  organisationName: string;
+  /** @minLength 2 */
+  contactName: string;
+  email: string;
+  /** @minLength 9 */
+  phone: string;
+  website?: string;
+  partnershipType: PartnerApplicationInputPartnershipType;
+  /**
+     * @minLength 20
+     * @maxLength 1500
+     */
+  organisationSummary: string;
+  /**
+     * @minLength 20
+     * @maxLength 1500
+     */
+  proposedContribution: string;
+  /** @minLength 2 */
+  countyOrCoverage: string;
+  verificationToken: string;
+  verificationAnswer: string;
+  formStartedAt: number;
+  honeypot?: string;
 }
 
 export type CoordinatorLevel = typeof CoordinatorLevel[keyof typeof CoordinatorLevel];

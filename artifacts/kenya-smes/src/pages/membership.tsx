@@ -15,7 +15,8 @@ import { useToast } from "@/hooks/use-toast";
 
 const plans = [
   { name: "ORDINARY MEMBER", fee: 150, target: ["Mama mboga", "Kiosk/duka operators", "Street vendors", "Market traders", "Informal service providers", "Small-scale farmers", "Boda boda operators"] },
-  { name: "GRASSROOTS COORDINATOR", fee: 250, target: ["Grassroots representatives across counties, constituencies and wards"], note: "Payment does not automatically appoint a person as a coordinator. Appointment is controlled by authorised administrators." },
+  { name: "GRASSROOTS COORDINATOR", fee: 250, target: ["Grassroots representatives across counties, constituencies and wards"], note: "Paying or applying does not appoint you to this coordinator role. Appointment requires BNAK review and written approval." },
+  { name: "SENIOR COORDINATOR", fee: 500, target: ["Experienced local and business leaders", "Expanded mobilisation", "Programme coordination", "Partner activation responsibilities"], note: "Paying or applying does not appoint you to this coordinator role. Appointment requires BNAK review and written approval. Eligible approved coordinators may earn commissions from selected partner products or programmes only under each partner's written terms, successful verified transactions and applicable law. Income is not guaranteed and no fixed percentage is promised." },
   { name: "RETAIL DEVELOPMENT MEMBER", fee: 5000, target: ["Retail businesses", "Commercial businesses", "Wholesalers", "Distributors", "Growing enterprises", "Suppliers", "Commercial traders"] },
   { name: "BUSINESS DEVELOPMENT MEMBER", fee: 10000, target: ["Established businesses", "Companies", "Manufacturers", "Distributors", "Investors", "Entrepreneurs", "Professional businesses"] },
 ];
@@ -225,6 +226,7 @@ export default function Membership() {
                       <p className="font-bold">{activePlan.name} — KSh {activePlan.fee.toLocaleString()}</p>
                       <p className="mt-2 text-sm text-muted-foreground">{activePlan.target.join(" • ")}</p>
                       {activePlan.note && <p className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">{activePlan.note}</p>}
+                      {(activePlan.name === "GRASSROOTS COORDINATOR" || activePlan.name === "SENIOR COORDINATOR") && <p className="mt-3 text-xs font-medium text-muted-foreground">Both coordinator roles remain subject to BNAK review and written approval. Membership payment or application is not an appointment.</p>}
                     </div>
                   </div>
                 )}

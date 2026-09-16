@@ -25,6 +25,8 @@ import type {
   BnakAiQuestion,
   Coordinator,
   CoordinatorInput,
+  DonationCheckout,
+  DonationCheckoutInput,
   EmobilityRegistration,
   EmobilityRegistrationInput,
   Event,
@@ -42,6 +44,8 @@ import type {
   MemberCategory,
   MemberInput,
   OrgStats,
+  PartnerApplication,
+  PartnerApplicationInput,
   Sector,
   VerificationChallenge
 } from './api.schemas';
@@ -1424,5 +1428,147 @@ export const useCreateEmobilityRegistration = <TError = ErrorType<void>,
         TContext
       > => {
       return useMutation(getCreateEmobilityRegistrationMutationOptions(options));
+    }
+
+export const getCreateDonationCheckoutUrl = () => {
+
+
+
+
+  return `/api/donations/checkout`
+}
+
+/**
+ * @summary Create a hosted Stripe checkout session for a donation
+ */
+export const createDonationCheckout = async (donationCheckoutInput: DonationCheckoutInput, options?: RequestInit): Promise<DonationCheckout> => {
+
+  return customFetch<DonationCheckout>(getCreateDonationCheckoutUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      donationCheckoutInput,)
+  }
+);}
+
+
+
+
+export const getCreateDonationCheckoutMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDonationCheckout>>, TError,{data: BodyType<DonationCheckoutInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createDonationCheckout>>, TError,{data: BodyType<DonationCheckoutInput>}, TContext> => {
+
+const mutationKey = ['createDonationCheckout'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDonationCheckout>>, {data: BodyType<DonationCheckoutInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createDonationCheckout(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateDonationCheckoutMutationResult = NonNullable<Awaited<ReturnType<typeof createDonationCheckout>>>
+    export type CreateDonationCheckoutMutationBody = BodyType<DonationCheckoutInput>
+    export type CreateDonationCheckoutMutationError = ErrorType<void>
+
+    /**
+ * @summary Create a hosted Stripe checkout session for a donation
+ */
+export const useCreateDonationCheckout = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDonationCheckout>>, TError,{data: BodyType<DonationCheckoutInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createDonationCheckout>>,
+        TError,
+        {data: BodyType<DonationCheckoutInput>},
+        TContext
+      > => {
+      return useMutation(getCreateDonationCheckoutMutationOptions(options));
+    }
+
+export const getCreatePartnerApplicationUrl = () => {
+
+
+
+
+  return `/api/partners/applications`
+}
+
+/**
+ * @summary Submit a partnership application for BNAK review
+ */
+export const createPartnerApplication = async (partnerApplicationInput: PartnerApplicationInput, options?: RequestInit): Promise<PartnerApplication> => {
+
+  return customFetch<PartnerApplication>(getCreatePartnerApplicationUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      partnerApplicationInput,)
+  }
+);}
+
+
+
+
+export const getCreatePartnerApplicationMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPartnerApplication>>, TError,{data: BodyType<PartnerApplicationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createPartnerApplication>>, TError,{data: BodyType<PartnerApplicationInput>}, TContext> => {
+
+const mutationKey = ['createPartnerApplication'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createPartnerApplication>>, {data: BodyType<PartnerApplicationInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createPartnerApplication(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreatePartnerApplicationMutationResult = NonNullable<Awaited<ReturnType<typeof createPartnerApplication>>>
+    export type CreatePartnerApplicationMutationBody = BodyType<PartnerApplicationInput>
+    export type CreatePartnerApplicationMutationError = ErrorType<void>
+
+    /**
+ * @summary Submit a partnership application for BNAK review
+ */
+export const useCreatePartnerApplication = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPartnerApplication>>, TError,{data: BodyType<PartnerApplicationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createPartnerApplication>>,
+        TError,
+        {data: BodyType<PartnerApplicationInput>},
+        TContext
+      > => {
+      return useMutation(getCreatePartnerApplicationMutationOptions(options));
     }
 

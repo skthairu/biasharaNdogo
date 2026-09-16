@@ -84,9 +84,10 @@ export default function Coordinators() {
           </div>
         </div>
         <h1 className="text-4xl font-bold text-foreground mb-4">Application Received!</h1>
-        <p className="text-xl text-muted-foreground mb-8">
-          Thank you for stepping up to lead. Our secretariat will review your coordinator application and contact you for the next steps.
+         <p className="text-xl text-muted-foreground mb-8">
+           Thank you for applying as a Senior Coordinator. Your application and KSh 500 payment request remain pending review; payment is not marked successful until BNAK verifies it.
         </p>
+         <p className="text-sm text-muted-foreground mb-8">Applying or paying does not appoint you to a coordinator role. Appointment requires BNAK review and written approval.</p>
         <Button onClick={() => window.location.href = "/"} size="lg" className="bg-primary text-white">
           Return Home
         </Button>
@@ -100,12 +101,12 @@ export default function Coordinators() {
       <section className="bg-secondary text-secondary-foreground py-20 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
         <div className="container mx-auto px-4 md:px-6 relative z-10 text-center max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Become a Local Coordinator</h1>
+           <h1 className="text-4xl md:text-5xl font-bold mb-6">Senior Coordinator — KSh 500 application</h1>
           <p className="text-lg md:text-xl text-secondary-foreground/90 leading-relaxed mb-8">
-            Be the voice of entrepreneurs in your community. We are building a robust national network rooted in local markets.
+             Apply to support expanded mobilisation, programme coordination and partner activation responsibilities. We are building a robust national network rooted in local markets.
           </p>
           <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur px-6 py-3 rounded-full font-bold text-lg border border-white/30 shadow-lg">
-            Registration Fee: KES 500
+             Application fee: KSh 500 (pending review)
           </div>
         </div>
       </section>
@@ -158,6 +159,11 @@ export default function Coordinators() {
                     <Badge variant="outline" className="bg-background">Community-led</Badge>
                   </li>
                 </ul>
+              </div>
+
+              <div className="bg-background p-6 rounded-2xl border border-border">
+                <h3 className="font-bold text-xl mb-2">Conditional partner commissions</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">Eligible approved coordinators may earn commissions from selected partner products or programmes only under each partner's written terms, successful verified transactions and applicable law. There is no guaranteed income and BNAK does not promise a fixed percentage.</p>
               </div>
             </div>
 
@@ -233,10 +239,10 @@ export default function Coordinators() {
                       </div>
 
                       <div className="space-y-4 pt-4">
-                        <h3 className="font-semibold text-lg border-b pb-2">Payment & Motivation</h3>
+                         <h3 className="font-semibold text-lg border-b pb-2">KSh 500 payment & motivation</h3>
                         <FormField control={form.control} name="mpesaNumber" render={({ field }) => (
                           <FormItem>
-                            <FormLabel>M-Pesa Number for KES 500 Registration</FormLabel>
+                             <FormLabel>M-Pesa Number for KSh 500 application</FormLabel>
                             <FormControl><Input placeholder="07XXXXXXXX" {...field} /></FormControl>
                             <FormDescription>This number will be prompted for payment.</FormDescription>
                             <FormMessage />
@@ -251,8 +257,9 @@ export default function Coordinators() {
                         )} />
                       </div>
 
-                      <Button type="submit" size="lg" className="w-full bg-primary hover:bg-primary/90 text-white font-bold" disabled={registerMutation.isPending}>
-                        {registerMutation.isPending ? "Submitting Application..." : "Submit Application & Pay KES 500"}
+                       <p className="text-xs leading-relaxed text-muted-foreground">Your application is sent for BNAK review. This form does not confirm payment or appoint a coordinator; any payment remains pending until verified.</p>
+                       <Button type="submit" size="lg" className="w-full bg-primary hover:bg-primary/90 text-white font-bold" disabled={registerMutation.isPending}>
+                         {registerMutation.isPending ? "Submitting Application..." : "Submit Senior Coordinator Application"}
                       </Button>
                     </form>
                   </Form>

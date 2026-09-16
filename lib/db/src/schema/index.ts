@@ -5,3 +5,4 @@ export * from "./coordinator_benefits";
 export * from "./sectors";
 export * from "./events";
 export * from "./marketplace";
+export * from "./partner_applications";
